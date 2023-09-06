@@ -1,0 +1,44 @@
+{% load wagtailcore_tags%}
+{% load waggylabs_filters %}
+
+<p>
+    {% if value.icon_location == 'end' %}
+    <button 
+        class="{{ value.button_style }}" 
+        type="button" 
+        data-bs-toggle="collapse" 
+        data-bs-target="#id-{{ id }}" 
+        aria-expanded="false" 
+        aria-controls="id-{{ id }}">
+        {{ value.text }}
+        {% if value.icon|is_icon %}
+        <i class="{{ value.icon|icon_class }}{% if value.text %} ms-1{% endif %}"></i>
+        {% endif %}
+    </button>
+    {% else %}
+        <button 
+            class="{{ value.button_style }}" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#id-{{ id }}" 
+            aria-expanded="false" 
+            aria-controls="id-{{ id }}">
+            {% if value.icon|is_icon %}
+            <i class="{{ value.icon|icon_class }}{% if value.text %} me-1{% endif %}"></i>
+            {% endif %}
+            {{ value.text }}
+        </button>
+    {% endif %}
+</p>
+<div class="collapse" id="id-{{ id }}">
+    <div class="card {{ value.style }} {{ value.alignment }} mb-3">
+        <div class="card-body">
+            {% for block in value.body %}
+                {% if block.block_type != 'citation' and block.block_type != 'document' %}
+                {% comment %}these blocks a rendedered at the end of the page as references{% endcomment %}
+                {% include_block block with id=block.id %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

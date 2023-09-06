@@ -1,0 +1,30 @@
+{% load wagtailadmin_tags  %}
+
+<div class="{{ classname }}">
+    {% if help_text %}
+    <span>
+        <div class="help">
+            {% icon name="help" classname="default" %}
+            {{ help_text }}
+        </div>
+    </span>
+    {% endif %}
+    <div class="w-field" data-contentpath="{{ children.link.block.name }}">
+        {% if children.link.block.label %}
+            <label class="w-field__label" {% if children.link.id_for_label %}for="{{ children.link.id_for_label }}"{% endif %}>{{ children.link.block.label }}{% if children.link.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+        {% endif %}
+        {{ children.link.render_form }}
+    </div>
+    <div class="waggylabs-grid-container-2">
+        {% for child in children.values %}
+            {% if child.block.name != 'link' %}
+                <div class="w-100" data-contentpath="{{ child.block.name }}">
+                    {% if child.block.label %}
+                        <label class="w-field__label" {% if child.id_for_label %}for="{{ child.id_for_label }}"{% endif %}>{{ child.block.label }}{% if child.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+                    {% endif %}
+                    {{ child.render_form }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

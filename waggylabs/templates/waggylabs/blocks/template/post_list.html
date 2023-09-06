@@ -1,0 +1,191 @@
+{% load wagtailcore_tags %}
+{% load wagtailroutablepage_tags %}
+{% load el_pagination_tags %}
+{% load waggylabs_filters %}
+
+{% show_current_number as current_page_number %}
+
+{% if value.show_pinned_posts and current_page_number == 1 and value.pinned_posts.count > 0 %}
+    {% if value.pinned_posts_header or value.pinned_posts_icon %}
+        {% if value.pinned_posts_icon_location == 'end' %}
+        <p class="{{ value.pinned_posts_header_style }}">
+            {{ value.pinned_posts_header }}
+            {% if value.pinned_posts_icon|is_icon %}<i class="{{ value.pinned_posts_icon|icon_class }}{% if value.pinned_posts_header %} ms-1{% endif %}"></i>{% endif %}
+        </p>
+        {% else %}
+        <p class="{{ value.pinned_posts_header_style }}">
+            {% if value.pinned_posts_icon|is_icon %}<i class="{{ value.pinned_posts_icon|icon_class }}{% if value.pinned_posts_header %} me-1{% endif %}"></i>{% endif %}
+            {{ value.pinned_posts_header }}
+        </p>
+        {% endif %}
+    {% endif %}
+    {% for post in value.pinned_posts %}
+    <div class="waggylabs-post-list-item card {{ value.post_style }} mb-3">
+        <div class="card-header">
+            <p class="{{ value.post_title_style }}"><a href="{% pageurl post %}" class="nav-link">{{ post.title }}</a></p>
+        </div>
+        <div class="card-body">
+            {% include_block post.body with page=post post_list_page=page page_in_list=True %}
+            {% if value.show_scrollspy %}
+            <div class="waggylabs-post-categories d-none">
+                {% for category in post.post_categories.all %}
+                <span data-slug="{{ category.slug }}">{{ category.slug }}</span>
+                {% endfor %}
+            </div>
+            <div class="waggylabs-post-tags d-none">
+                {% for tag in post.tags.all %}
+                <span data-slug="{{ tag.slug }}">{{ tag.slug }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% if value.show_footer %}
+        <div class="card-footer d-inline-flex align-items-center">
+            {% if value.show_avatar %}
+            <div {% if not value.show_username %}class="flex-grow-1"{% endif %}>
+                <a href="{% routablepageurl page 'posts_by_owner' post.owner.get_username %}" class="nav-link">
+                <img src="{{ post.owner.wagtail_userprofile.avatar.url }}" class="float-start me-1" alt="{{ post.owner.get_username }}" style="max-height: 2rem;">
+                </a>
+            </div>
+            {% endif %}
+            {% if value.show_username %}
+            <div class="flex-grow-1">
+                <a href="{% routablepageurl page 'posts_by_owner' post.owner.get_username %}" class="nav-link">
+                    {% if post.owner.get_full_name %}{{ post.owner.get_full_name }}{% else %}{{ post.owner.get_username }}{% endif %}
+                </a>
+            </div>
+            {% endif %}
+            {% if value.show_first_published_at %}
+            <div> 
+                {% if value.datetime_style == 'timesince' %}
+                    {{ post.first_published_at|timesince }} {{ value.timesince_text }}
+                    {% else %}
+                    {{ post.first_published_at|date:'j E, Y' }} {% if value.datetime_style == 'datetime' %}{{ post.first_published_at|time:value.time_format }}{% endif %}
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% endif %}
+
+{% if value.posts_header or value.posts_icon %}
+    {% if value.posts_icon_location == 'end' %}
+    <p class="{{ value.posts_header_style }}">
+        {{ value.posts_header }}
+        {% if value.posts_icon|is_icon %}<i class="{{ value.posts_icon|icon_class }}{% if value.posts_header %} ms-1{% endif %}"></i>{% endif %}
+    </p>
+    {% else %}
+    <p class="{{ value.posts_header_style }}">
+        {% if value.posts_icon|is_icon %}<i class="{{ value.posts_icon|icon_class }}{% if value.posts_header %} me-1{% endif %}"></i>{% endif %}
+        {{ value.posts_header }}
+    </p>
+    {% endif %}
+{% endif %}
+
+{% paginate value.posts_per_page posts %}
+{% for post in posts %}
+<div class="waggylabs-post-list-item card {{ value.post_style }} mb-3">
+    <div class="card-header">
+        <p class="{{ value.post_title_style }}"><a href="{% pageurl post %}" class="nav-link">{{ post.title }}</a></p>
+    </div>
+    <div class="card-body">
+        {% include_block post.body with page=post post_list_page=page page_in_list=True %}
+        {% if value.show_scrollspy %}
+        <div class="waggylabs-post-categories d-none">
+            {% for category in post.post_categories.all %}
+            <span data-slug="{{ category.post_category.slug }}">{{ category.post_category.slug }}</span>
+            {% endfor %}
+        </div>
+        <div class="waggylabs-post-tags d-none">
+            {% for tag in post.tags.all %}
+            <span data-slug="{{ tag.slug }}">{{ tag.slug }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% if value.show_footer %}
+    <div class="card-footer d-inline-flex align-items-center">
+        {% if value.show_avatar %}
+        <div {% if not value.show_username %}class="flex-grow-1"{% endif %}>
+            <a href="{% routablepageurl page 'posts_by_owner' post.owner.get_username %}" class="nav-link">
+            <img src="{{ post.owner.wagtail_userprofile.avatar.url }}" class="float-start me-1" alt="{{ post.owner.get_username }}" style="max-height: 2rem;">
+            </a>
+        </div>
+        {% endif %}
+        {% if value.show_username %}
+        <div class="flex-grow-1">
+            <a href="{% routablepageurl page 'posts_by_owner' post.owner.get_username %}" class="nav-link">
+                {% if post.owner.get_full_name %}{{ post.owner.get_full_name }}{% else %}{{ post.owner.get_username }}{% endif %}
+            </a>
+        </div>
+        {% endif %}
+        {% if value.show_first_published_at %}
+        <div> 
+            {% if value.datetime_style == 'timesince' %}
+                {{ post.first_published_at|timesince }} {{ value.timesince_text }}
+                {% else %}
+                {{ post.first_published_at|date:'j E, Y' }} {% if value.datetime_style == 'datetime' %}{{ post.first_published_at|time:value.time_format }}{% endif %}
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+
+{% get_pages %}
+<nav aria-label="Post list navigation">
+    <ul class="pagination {{ value.page_alignment }} {{ value.page_size }}">
+        {% if not pages.current.is_first %}
+            {% if value.first_page_icon or value.first_page_text %}
+            <li class="page-item">
+                <a href="{{ pages.first.path }}"
+                    rel="prev{% if add_nofollow %} nofollow{% endif %}"
+                    data-el-querystring-key="{{ querystring_key }}"
+                    class="page-link">
+                    {% if value.first_page_icon|is_icon %}<i class="{{ value.first_page_icon|icon_class }}{% if value.first_page_text %} me-1{% endif %}"></i>{% endif %}
+                    {{ value.first_page_text }}
+                </a>
+            </li>
+            {% endif %}
+            {% if value.previous_page_icon or value.previous_page_text %}
+            <li class="page-item">
+                <a href="{{ pages.previous.path }}"
+                    rel="prev{% if add_nofollow %} nofollow{% endif %}"
+                    data-el-querystring-key="{{ querystring_key }}"
+                    class="page-link">
+                    {% if value.previous_page_icon|is_icon %}<i class="{{ value.previous_page_icon|icon_class }}{% if value.previous_page_text %} me-1{% endif %}"></i>{% endif %}
+                    {{ value.previous_page_text }}
+                </a>
+            </li>
+            {% endif %}
+        {% endif %}
+        {{ pages.get_rendered }}
+        {% if not pages.current.is_last %}
+            {% if value.next_page_icon or value.next_page_text %}
+            <li class="page-item">
+                <a href="{{ pages.next.path }}"
+                    rel="prev{% if add_nofollow %} nofollow{% endif %}"
+                    data-el-querystring-key="{{ querystring_key }}"
+                    class="page-link">
+                    {{ value.next_page_text }}
+                    {% if value.next_page_icon|is_icon %}<i class="{{ value.next_page_icon|icon_class }}{% if value.next_page_text %} ms-1{% endif %}"></i>{% endif %}
+                </a>
+            </li>
+            {% endif %}
+            {% if value.last_page_icon or value.last_page_text %}
+            <li class="page-item">
+                <a href="{{ pages.last.path }}"
+                    rel="prev{% if add_nofollow %} nofollow{% endif %}"
+                    data-el-querystring-key="{{ querystring_key }}"
+                    class="page-link">
+                    {{ value.last_page_text }}
+                    {% if value.last_page_icon|is_icon %}<i class="{{ value.last_page_icon|icon_class }}{% if value.last_page_text %} ms-1{% endif %}"></i>{% endif %}
+                </a>
+            </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</nav>

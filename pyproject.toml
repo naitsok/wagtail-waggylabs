@@ -1,0 +1,62 @@
+[build-system]
+requires = ['setuptools>=68.1.2', 'wheel']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = "wagtail-waggylabs"
+dynamic = ["version"]
+authors = [
+    {name = "Konstantin Tamarov", email = "ktamarov@gmail.com"},
+]
+maintainers = [
+    {name = "Konstantin Tamarov", email = "ktamarov@gmail.com"},
+]
+description = "A Wagtail app for research group and scientific blog sites."
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.10"
+keywords = ["Wagtail", "Research", "Blog"]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.1",
+    "Framework :: Wagtail",
+    "Framework :: Wagtail :: 5",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+dependencies = [
+    "Django>=4.1,<4.2",
+    "beautifulsoup4>=4.11.2",
+    "django-el-pagination>=4.0.0",
+    "django-taggit>=3.1.0",
+    "django-hitcount>=1.3.5",
+    "django-simple-captcha>=0.5.17",
+    "emoji>=2.5.1",
+    "psycopg2>=2.9.6",
+    "pygments>=2.15.1",
+    "wagtail>=5.1",
+    "wagtail-markdown>=0.11.0",
+    "wagtailmenus>=3.1.8",
+    "wagtail-metadata>=4.0.3",
+]
+
+[project.urls] 
+"Homepage" = "https://ktamarov.com/demo-page"
+"Bug Reports" = "https://github.com/natisok/wagtail-waggylabs/issues"
+"Source" = "https://github.com/natisok/wagtail-waggylabs/"
+
+[tool.setuptools]
+packages = ["waggylabs"]
+
+[tool.setuptools.dynamic]
+version = {attr = "waggylabs.VERSION"}

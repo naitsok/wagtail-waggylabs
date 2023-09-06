@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailimages_tags %}
+
+{% block title %}Page not found{% endblock %}
+
+{# {% block body_class %}template-404{% endblock %} #}
+
+{% block content %}
+<h1>&#x27E8;4|&#x00D4;|4&#x27E9; - Page not found</h1>
+
+<h2>Sorry, this page could not be found.</h2>
+
+{% with settings.waggylabs.WaggyLabsSettings as site_settings %}
+
+<p>
+{% if site_settings.site_icon %}
+{% image site_settings.site_icon original class='img-fluid' %}
+{% else %}
+<img src="{% static 'waggylabs/icons/waggylabs-logo.svg' %}" class="img-fluid" alt="Waggy Labs">
+{% endif %}
+</p>
+
+{% endwith %}
+
+{% endblock %}

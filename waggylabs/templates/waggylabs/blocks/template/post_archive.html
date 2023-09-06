@@ -1,0 +1,160 @@
+{% load wagtailcore_tags %}
+{% load wagtailroutablepage_tags %}
+
+{% if footer %}
+    {# Post archives are in footer #}
+    {% if value.archives.count > 0 %}
+    <ul class="list-unstyled overflow-hidden {{ value.text_wrap }}">
+        {% for date in value.archives %}
+        <li class="mb-2">
+            {% if value.archive_period == 'day' %}
+            <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' date|date:'d' %}" >{{ date|date:'j E, Y' }}</a>
+            {% elif value.archive_period == 'month' %}
+            <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' %}" >{{ date|date:'E, Y' }}</a>
+            {% else %}
+            <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' %}" >{{ date|date:'Y' }}</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+        {% if value.more_archives.count > 0 %}
+        <li>
+            <a data-bs-toggle="collapse" href="#collapse-{{ id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ id }}">
+            {{ value.more_archive_text }}
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+    {% if value.more_archives.count > 0 %}
+    <ul id="collapse-{{ id }}" class="collapse list-unstyled overflow-hidden {{ value.text_wrap }}">
+        {% for date in value.more_archives %}
+        <li class="mb-2">
+            {% if value.archive_period == 'day' %}
+            <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' date|date:'d' %}" >{{ date|date:'j E, Y' }}</a>
+            {% elif value.archive_period == 'month' %}
+            <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' %}" >{{ date|date:'E, Y' }}</a>
+            {% else %}
+            <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' %}" >{{ date|date:'Y' }}</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% else %}
+{# else for footer #}
+    {% if value.archives.count > 0 %}
+        {% if 'group' in value.list_style %}
+            <div class="{{ value.list_style }}">
+                {% for date in value.archives %}
+                    {% if value.archive_period == 'day' %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' date|date:'d' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'j E, Y' }}
+                    </a>
+                    {% elif value.archive_period == 'month' %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'E, Y' }}
+                    </a>
+                    {% else %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'Y' }}
+                    </a>
+                    {% endif %}
+                {% endfor %}
+                {% if value.more_archives.count > 0 %}
+                    <a data-bs-toggle="collapse" href="#collapse-{{ id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ id }}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ value.more_archive_text }}
+                    </a>
+                {% endif %}
+            </div>
+            {% if value.more_archives.count > 0 %}
+                <div class="{{ value.list_style }}">
+                {% for date in value.more_archives %}
+                    {% if value.archive_period == 'day' %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' date|date:'d' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'j E, Y' }}
+                    </a>
+                    {% elif value.archive_period == 'month' %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'E, Y' }}
+                    </a>
+                    {% else %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'Y' }}
+                    </a>
+                    {% endif %}
+                {% endfor %}
+                </div>
+                {# endif for more_archives #}
+            {% endif %}
+
+        {% else %}
+        {# else related to value.list_style #}
+            <{% if 'number' in value.list_style %}ol{% else %}ul{% endif %} class="{{ value.list_style }}">
+                {% for date in value.archives %}
+                <li>
+                    {% if value.archive_period == 'day' %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' date|date:'d' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'j E, Y' }}
+                    </a>
+                    {% elif value.archive_period == 'month' %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'E, Y' }}
+                    </a>
+                    {% else %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'Y' }}
+                    </a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+                {% if value.more_archives.count > 0 %}
+                <li>
+                    <a data-bs-toggle="collapse" href="#collapse-{{ id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ id }}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ value.more_archive_text }}
+                    </a>
+                </li>
+                {% endif %}
+            </{% if 'number' in value.list_style %}ol{% else %}ul{% endif %}>
+
+            {% if value.more_archives.count > 0  %}
+                <{% if 'number' in value.list_style %}ol{% else %}ul{% endif %} class="{{ value.list_style }}">
+                {% for date in value.archives %}
+                <li>
+                    {% if value.archive_period == 'day' %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' date|date:'d' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'j E, Y' }}
+                    </a>
+                    {% elif value.archive_period == 'month' %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' date|date:'b' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'E, Y' }}
+                    </a>
+                    {% else %}
+                    <a href="{% routablepageurl value.post_list_page 'posts_by_date' date|date:'Y' %}"
+                        class="{{ value.list_item_style }} {% if 'btn' in value.list_item_style %}mt-1 mb-1{% endif %}">
+                        {{ date|date:'Y' }}
+                    </a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+                </{% if 'number' in value.list_style %}ol{% else %}ul{% endif %}>
+            {# endif for more_archives #}
+            {% endif %}
+        {# endif for list_style #}
+        {% endif %}
+    {# endif for  archives.count #}
+    {% endif %}
+{# endif for footer #}
+{% endif %}

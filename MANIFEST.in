@@ -1,0 +1,6 @@
+include LICENSE
+include README.md
+graft waggylabs
+prune **/__pycache__
+global-exclude *.py[co]
+recursive-exclude waggylabs_site

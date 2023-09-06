@@ -1,0 +1,7 @@
+{% load wagtailcore_tags %}
+
+
+{% for block in value.visuals %}
+    {% include_block block with id=block.id sidebar=True visual_settings=value %}
+    {% if forloop.last and sidebar_tabs %}{% else %}<hr>{% endif %}
+{% endfor %}

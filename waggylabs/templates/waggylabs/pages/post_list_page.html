@@ -1,0 +1,18 @@
+{% extends 'pages/base_page.html' %}
+
+{% load static %}
+{% load wagtailcore_tags %}
+
+
+{% block content %}
+
+{% include_block page.body %}
+
+{% endblock content %}
+
+
+{% block js %}
+{{ block.super }}
+<script src="{% static 'waggylabs/js/most-visible.js' %}"></script>
+<script src="{% static 'waggylabs/js/scroll-spy.js' %}"></script>
+{% endblock %}

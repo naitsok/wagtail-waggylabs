@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% load waggylabs_filters %}
+{% load waggylabs_tags %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+    <h1>Search</h1>
+    <form action="{% url 'search' %}" method="get">
+        {% csrf_token %}
+        <div class="input-group input-group-lg mb-3">
+            <input type="text" name="query" class="form-control" placeholder="Search query" aria-label="Search query" aria-describedby="submit-query" value="{{ search_query }}">
+            <input type="submit" class="btn btn-outline-secondary" value="Search" id="submit-query">
+        </div>
+    </form>
+
+    {% if search_results %}
+        {% for result_page in search_results %}
+        <div class="mb-3">
+            <h2><a class="nav-link" href="{% pageurl result_page %}">{% search_results_title result_page search_tokens %}</a></h1>
+            {% search_results_body result_page search_tokens %}
+        </div><hr />
+        {% endfor %}
+        <nav aria-label="Search navigation">
+            <ul class="pagination {{ site_settings.paginator_alignment }} {{ site_settings.paginator_size }}">
+                {% if site_settings.first_page_text or site_settings.first_page_icon %}
+                <li class="page-item">
+                    <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page=1"
+                        class="page-link">
+                        {% if site_settings.first_page_icon|is_icon %}<i class="{{ site_settings.first_page_icon|icon_class }}{% if site_settings.first_page_text %} me-1{% endif %}"></i>{% endif %}
+                        {{ site_settings.first_page_text }}
+                    </a>
+                </li>
+                {% endif %}
+                {% if search_results.has_previous %}
+                <li class="page-item">
+                    <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}"
+                        class="page-link">
+                        {% if site_settings.previous_page_text or site_settings.previous_page_icon %}
+                        {% if site_settings.previous_page_icon|is_icon %}<i class="{{ site_settings.previous_page_icon|icon_class }}{% if site_settings.previous_page_text %} me-1{% endif %}"></i>{% endif %}
+                        {{ site_settings.previous_page_text }}
+                        {% else %}
+                        Previous
+                        {% endif %}
+                    </a>
+                </li>
+                {% endif %}
+                {% if search_results.has_next %}
+                <li class="page-item">
+                    <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}"
+                        class="page-link">
+                        {% if site_settings.next_page_text or site_settings.next_page_icon %}
+                        {% if site_settings.next_page_icon|is_icon %}<i class="{{ site_settings.next_page_icon|icon_class }}{% if site_settings.next_page_text %} me-1{% endif %}"></i>{% endif %}
+                        {{ site_settings.next_page_text }}
+                        {% else %}
+                        Next
+                        {% endif %}
+                    </a>
+                </li>
+                {% endif %}
+                {% if site_settings.last_page_text or site_settings.last_page_icon %}
+                <li class="page-item">
+                    <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.paginator.num_pages }}"
+                        class="page-link">
+                        {% if site_settings.last_page_icon|is_icon %}<i class="{{ site_settings.last_page_icon|icon_class }}{% if site_settings.last_page_text %} me-1{% endif %}"></i>{% endif %}
+                        {{ site_settings.last_page_text }}
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% elif search_query %}
+        No results found
+    {% else %}
+        Please type something into the search box
+    {% endif %}
+{% endblock %}

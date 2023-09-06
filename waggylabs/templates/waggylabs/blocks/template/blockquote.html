@@ -1,0 +1,16 @@
+{% load wagtailcore_tags %}
+{% load waggylabs_filters %}
+
+<figure id="{{ value.label }}" class="mb-3 waggylabs-label-blockquote">
+    <blockquote class="blockquote">
+        <div class="d-flex">
+            {% if value.show_icon %}<div class="me-3"><i class="bi bi-quote"></i></div>{% endif %}
+            <div class="{{ value.alignment }} w-100">{{ value.quote|markdown:page.pk|safe }}</div>
+        </div>       
+        {% if value.author or value.source %}
+            <figcaption class="{{ value.alignment }} blockquote-footer ps-5">
+                {{ value.author }} {% if value.source %}in <cite title="Source Title">{{ value.source }}</cite>{% endif %}
+            </figcaption>
+        {% endif %}
+    </blockquote>
+</figure>

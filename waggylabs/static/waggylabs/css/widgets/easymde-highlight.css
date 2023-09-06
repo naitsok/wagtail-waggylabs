@@ -1,0 +1,19 @@
+.CodeMirror-line span.cm-keyword {color: rgb(171, 0, 194);}
+.CodeMirror-line span.cm-atom {color: rgb(20, 167, 187);}
+.CodeMirror-line span.cm-number {color: #164;}
+.CodeMirror-line span.cm-def {color: rgb(74, 74, 250);}
+.CodeMirror-line span.cm-variable {color: var(--w-color-text-context);}
+.CodeMirror-line span.cm-variable-2 {color: rgb(22, 122, 223);}
+.CodeMirror-line span.cm-variable-3 {color: #085;}
+.CodeMirror-line span.cm-property {color: var(--w-color-text-context);}
+.CodeMirror-line span.cm-operator {color: var(--w-color-text-context);}
+.CodeMirror-line span.cm-string {color: rgb(201, 32, 32);}
+.CodeMirror-line span.cm-string-2 {color: #f50;}
+.CodeMirror-line span.cm-meta {color: #555;}
+.CodeMirror-line span.cm-error {color: #f00;}
+.CodeMirror-line span.cm-qualifier {color: #555;}
+.CodeMirror-line span.cm-builtin {color: rgb(76, 0, 255);}
+.CodeMirror-line span.cm-bracket {color: #997;}
+.CodeMirror-line span.cm-tag {color: #170;}
+.CodeMirror-line span.cm-attribute {color: rgb(70, 70, 201);}
+.CodeMirror-line span.cm-hr {color: #999;}

@@ -1,0 +1,68 @@
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% load waggylabs_filters %}
+
+{% if sidebar %}
+{# rendering in the sidebar #}
+<figure class="figure">
+    <div class="waggylabs-sidebar-button-container">
+        {% image value.image original class='img-fluid rounded' %}
+        {% if visual_settings.preview_buttons_icon_location == 'end' %}
+        <button type="button" class="{{ visual_settings.preview_buttons_style }} waggylabs-sidebar-button" data-bs-toggle="modal" data-bs-target="#modal-{{ id }}">
+            {{ visual_settings.preview_buttons_text }}
+            {% if visual_settings.preview_buttons_icon|is_icon %}
+            <i class="{{  visual_settings.preview_buttons_icon|icon_class }}{% if  visual_settings.preview_buttons_text %} ms-1{% endif %}"></i>
+            {% endif %}
+        </button>
+        {% else %}
+        <button type="button" class="{{ visual_settings.preview_buttons_style }} waggylabs-sidebar-button" data-bs-toggle="modal" data-bs-target="#modal-{{ id }}">
+            {% if visual_settings.preview_buttons_icon|is_icon %}
+            <i class="{{  visual_settings.preview_buttons_icon|icon_class }}{% if  visual_settings.preview_buttons_text %} me-1{% endif %}"></i>
+            {% endif %}
+            {{ visual_settings.preview_buttons_text }}
+        </button>
+        {% endif %}
+    </div>
+    {% if value.caption %}
+        <figcaption class="figure-caption">
+            {% if page.figure_caption_label %}<p class="me-1 waggylabs-entity-label" id="sb-el-{{ id }}">{{ page.figure_caption_label }}</p>{% endif %}
+            {{ value.caption|markdown:page.pk|safe }}
+        </figcaption>
+    {% endif %}
+</figure>
+{% elif modal %}
+{# Modals are always renedered on the main page because they are not working well in case of rendering inside sticky sidebar tabs #}
+<div class="modal fade" id="modal-{{ id }}" tabindex="-1" aria-labelledby="modal-el-{{ id }}" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-el-{{ id }}">{% if page.figure_caption_label %}{{ page.figure_caption_label }}{% endif %}</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <figure class="figure">
+                    {% image value.image original class='img-fluid rounded' %}
+                    {% if value.caption %}
+                    <figcaption class="figure-caption">
+                        {{ value.caption|markdown:page.pk|safe }}
+                    </figcaption>
+                    {% endif %}
+                </figure>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<figure class="figure waggylabs-label-figure" {% if value.label %}id="{{ value.label }}-{{ page.pk }}"{% endif %}>
+    {% if not after_cut %}
+    {# No need to render if it is under cut #}
+    {% image value.image original class='img-fluid rounded' %}
+    {% endif %}
+    {% if value.caption %}
+        <figcaption class="figure-caption">
+            {% if page.figure_caption_label %}<p class="me-1 waggylabs-entity-label" id="el-{{ id }}">{{ page.figure_caption_label }}</p>{% endif %}
+            {{ value.caption|markdown:page.pk|safe }}
+        </figcaption>
+    {% endif %}
+</figure>
+{% endif %}

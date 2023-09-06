@@ -1,0 +1,236 @@
+{% load static %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% load wagtailuserbar %}
+{% load menu_tags %}
+{% load waggylabs_tags %}
+{% load waggylabs_filters %}
+
+
+{% wagtail_site as current_site %}
+{% with settings.waggylabs.WaggyLabsSettings as site_settings %}
+<!doctype html>
+<html {% if not site_settings.site_theme or site_settings.theme_supports_color_mode %}data-bs-theme="dark"{% endif %}  lang="en">
+    <head>
+        {# Required Boostrap meta tags #}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        {# Bootstrap CSS #}
+        <!-- CSS only -->
+        {% if settings.waggylabs.WaggyLabsSettings.site_theme %}
+        <link href="{{ settings.waggylabs.WaggyLabsSettings.site_theme.url }}" rel="stylesheet">
+        {% else %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        {% endif %}
+        {# Bootstrap icons #}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        {# WaggyLabs CSS #}
+        <link href="{% static 'waggylabs/css/codehilite-styles.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'waggylabs/css/waggylabs.css' %}" rel="stylesheet">
+        {% block css %}
+        {# Overwrite this in templates to add extra stylesheets #}
+        {% endblock %}
+        {# browser tab icon #}
+        {% image site_settings.site_icon max-40x40 as icon %}
+        <link rel="icon" href="{{ icon.url }}">
+        <title>
+        {# Page title block. Overwrite in the page template if needed. #}
+        {% block title %}
+        {% if current_site.site_name and site_settings.show_site_name and site_settings.site_name_alignment == 'before_title' %}
+            {{ current_site.site_name }} {{ site_settings.site_name_separator }} {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+        {% elif current_site.site_name and site_settings.show_site_name and site_settings.site_name_alignment == "after_title" %}
+            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %} {{ site_settings.site_name_separator }} {{ current_site.site_name }}
+        {% else %}
+            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+        {% endif %}
+        {% endblock %}
+        </title>
+        {% block meta_tag %}
+        {# block to add wagtail-metadata #}
+        <meta name="description" content="{{ page.search_description }}" />
+        {% endblock meta_tag %}
+        {% endwith %}
+    </head>
+    <body>
+        {% wagtailuserbar 'bottom-right' %}
+        {% with settings.waggylabs.WaggyLabsSettings as site_settings %}
+        <header id="navbar-header" class="{% navbar_class site_settings %}" 
+            style="{% if site_settings.navbar_color %}background: {{ site_settings.navbar_color }};{% endif %}">
+            <nav class="container-xl flex-wrap flex-lg-nowrap" aria-label="Main navigation">
+                <a class="navbar-brand p-0 me-0 me-lg-2" href="/" aria-label="{{ current_site.site_name }}">
+                    {% image site_settings.site_icon max-40x40 class='d-inline-block align-text-top' %}
+                </a>
+                <a class="navbar-brand" href="/"
+                    style="{% if site_settings.navbar_link_color %}--bs-navbar-color: {{ site_settings.navbar_link_color }};{% endif %}
+                           {% if site_settings.navbar_link_color %}--bs-navbar-brand-color: {{ site_settings.navbar_link_color }};{% endif %}
+                           {% if site_settings.navbar_hover_link_color %}--bs-navbar-brand-hover-color: {{ site_settings.navbar_hover_link_color }};{% endif %}">
+                    {% if site_settings.show_site_name %}{{ current_site.site_name }}{% endif %}
+                    {% if site_settings.site_slogan %}<br /><span class="fs-6 fst-italic px-4 py-0 my-0"><small>{{ site_settings.site_slogan }}</small></span>{% endif %}
+                </a>
+                <button class="navbar-toggler d-flex d-lg-none order-3 p-2 border-0 shadow-none fs-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-label="Toggle navigation">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="offcanvas-lg offcanvas-end flex-grow-1" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel" data-bs-scroll="true" role="dialog">
+                    <div class="offcanvas-header px-4 pb-0">
+                        <h5 class="offcanvas-title" id="bdNavbarOffcanvasLabel">{{ current_site.site_name }}</h5>
+                        <button type="button" class="btn-close " data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
+                    </div>
+                    <div class="offcanvas-body p-4 pt-0 p-lg-0 mt-1">
+                        <ul class="navbar-nav flex-row flex-wrap {% if site_settings.navbar_menu_alignment != 'left' %}ms-md-auto{% endif %}"
+                            style="{% if site_settings.navbar_link_color %}--bs-nav-link-color: {{ site_settings.navbar_link_color }};{% endif %}
+                                   {% if site_settings.navbar_active_link_color %}--bs-navbar-active-color: {{ site_settings.navbar_active_link_color }};{% endif %}
+                                   {% if site_settings.navbar_hover_link_color %}--bs-nav-link-hover-color: {{ site_settings.navbar_hover_link_color }};{% endif %}">
+                            {% main_menu maxlevels=site_settings.menu_max_levels allow_repeating_parents=site_settings.menu_allow_repeating_parents template="waggylabs/menus/main_menu.html" %}
+                        </ul>
+                        <ul class="navbar-nav flex-row flex-wrap {% if site_settings.navbar_menu_alignment != 'right' %}ms-md-auto{% endif %}"
+                            style="{% if site_settings.navbar_link_color %}--bs-nav-link-color: {{ site_settings.navbar_link_color }};{% endif %}
+                                   {% if site_settings.navbar_active_link_color %}--bs-navbar-active-color: {{ site_settings.navbar_active_link_color }};{% endif %}
+                                   {% if site_settings.navbar_hover_link_color %}--bs-nav-link-hover-color: {{ site_settings.navbar_hover_link_color }};{% endif %}">
+                            {% if site_settings.navbar_menu_alignment == 'right' %}
+                            <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+                                <div class="vr d-none d-lg-flex h-100 mx-lg-2"></div>
+                                <hr class="d-lg-none my-2">
+                            </li>
+                            {% endif %}
+                            {% if site_settings.search_in_menu %}
+                            <li class="nav-item dropdown">
+                                <button class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
+                                    id="bd-search" name="search" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">
+                                    <i class="bi-search"></i>
+                                    <span class="d-lg-none ms-2">Search</span>
+                                </button>
+                                <form class="dropdown-menu dropdown-menu-end p-4" 
+                                    style="--bs-dropdown-min-width: 20rem;"
+                                    role="search" method="get" action="{% url 'search' %}">
+                                    {% csrf_token %}
+                                    <input type="text" name="query" class="form-control mb-3" placeholder="Search query" aria-label="Search query" aria-describedby="button-search">
+                                    <input class="btn btn-outline-primary" type="submit" id="button-search" value="Search"
+                                        {% if site_settings.navbar_color %}
+                                        style="
+                                        --bs-btn-color: {{ site_settings.navbar_color }};
+                                        --bs-btn-border-color: {{ site_settings.navbar_color }};
+                                        --bs-btn-hover-bg: {{ site_settings.navbar_color }};
+                                        --bs-btn-hover-border-color: {{ site_settings.navbar_color }};
+                                        --bs-btn-active-bg: {{ site_settings.navbar_color }};
+                                        --bs-btn-active-border-color: {{ site_settings.navbar_color }};
+                                        --bs-btn-disabled-color: {{ site_settings.navbar_color }};
+                                        --bs-btn-disabled-border-color: {{ site_settings.navbar_color }};"{% endif %}>
+                                </form>
+                            </li>
+                            {% endif %}
+                            {% for block in site_settings.navbar_links %}
+                                {% if forloop.first %}
+                                <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+                                    <div class="vr d-none d-lg-flex h-100 mx-lg-2"></div>
+                                    <hr class="d-lg-none my-2">
+                                </li>
+                                {% endif %}
+                                <li class="nav-item" {# style="--bs-navbar-nav-link-padding-x: 0px;" #}>
+                                    {% include_block block with navbar=True %}
+                                </li>
+                            {% endfor %}
+                            {% if not site_settings.site_theme or  site_settings.theme_supports_color_mode %}
+                            <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+                                <div class="vr d-none d-lg-flex h-100 mx-lg-2"></div>
+                                <hr class="d-lg-none my-2">
+                            </li>
+                            <li class="nav-item dropdown">
+                                <button class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
+                                    id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">
+                                    <span class="theme-icon-active"><i class="bi-circle-half"></i></span>
+                                    <span class="d-lg-none ms-2">Toggle theme</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" 
+                                    style="--bs-dropdown-min-width: 8rem; {% if site_settings.navbar_color %}--bs-dropdown-link-active-bg: {{site_settings.navbar_color }};{% endif %}">
+                                    <li>
+                                        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                                            <span class="me-2 opacity-50 theme-icon"><i class="bi-sun-fill"></i></span>
+                                            Light
+                                            <span class="ms-auto opacity-50 theme-icon-check"><i class="bi-check2 d-none"></i></span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                                            <span class="me-2 opacity-50 theme-icon"><i class="bi-moon-stars-fill"></i></span>
+                                            Dark
+                                            <span class="ms-auto opacity-50 theme-icon-check"><i class="bi-check2 d-none"></i></span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
+                                            <span class="me-2 opacity-50 theme-icon"><i class="bi-circle-half"></i></span>
+                                            Auto
+                                            <span class="ms-auto opacity-50 theme-icon-check"><i class="bi-check2 d-none"></i></span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        
+        <div class="container mt-5">
+            <div class="row" role="main">
+                <main class="{% main_class site_settings page %}">
+                    {% block content %}
+                    {# Overwrite this in the page template to display page content #}
+                    {% endblock %}
+                </main>
+                {% block sidebar %}
+                    {% if page.show_sidebar %}
+                        {% for block in page.sidebar %}
+                            {% include_block block %}
+                        {% endfor %}
+                    {% endif %}
+                {% endblock %}
+            </div>
+        </div>
+        
+        <footer class="footer py-4 py-md-5 mt-5 bg-body-tertiary">
+            <div class="container py-4 py-md-5 px-4 px-md-3 text-body-secondary">
+                <div class="row">
+                    <div class="col-lg-3 mb-3">
+                        <a class="d-inline-flex align-items-center mb-2 text-body-secondary text-decoration-none" href="/" aria-label="{{ current_site.site_name }}">
+                            {% image site_settings.site_icon max-40x40 class='d-inline-block align-text-top' %}
+                            <span class="fs-5">{{ current_site.site_name }}</span>
+                        </a>
+                        <ul class="list-unstyled small">
+                            {% if site_settings.copyright_info or site_settings.copyright_icon|is_icon %}
+                            <li class="mb-2">{% if site_settings.copyright_icon|is_icon %}<i class="{{ site_settings.copyright_icon|icon_class }}"></i>&nbsp;{% endif %}{{ site_settings.copyright_info }}</li>
+                            {% endif %}
+                            {% if site_settings.content_license_link or site_settings.content_license_text %}
+                            <li class="mb-2">Content licensed {% if site_settings.content_license_link %}<a href="{{ site_settings.content_license_link }}" target="_blank" rel="license noopener">{% if site_settings.content_license_text %}{{ site_settings.content_license_text }}{% else %}{{ site_settings.content_license_link|link_domain }}{% endif %}</a>{% else %}{{ site_settings.content_license_text }}{% endif %}.</li>
+                            {% endif %}
+                            <li class="mb-2">
+                                Driven by <a href="https://github.com/naitsok/waggylabs-site-dev/" target="_blank">Waggy Labs</a>, 
+                                a <a href="https://wagtail.org" target="_blank">Wagtail</a> powered research group and scientific blog CMS built by <a href="https://github.com/naitsok/waggy-labs-site-dev/graphs/contributors" target="_blank">our controbutors</a>.
+                                Code licensed under <a href="https://github.com/naitsok/waggylabs-site-dev/blob/main/LICENSE" target="_blank" rel="license noopener">MIT</a>.
+                            </li>
+                        </ul>
+                    </div>
+                    {% if site_settings.footer %}
+                    {% for block in site_settings.footer %}
+                        {% include_block block %}
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </footer>
+
+        
+        {# Bootstrap javascript files #}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+        {# Theme chooser #}
+        {% if not site_settings.site_theme or site_settings.theme_supports_color_mode %}
+        <script src="{% static 'waggylabs/js/color-mode.js' %}"></script>
+        {% endif %}
+        {% block js %}
+        {# Overwrite this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
+</html>
+{% endwith %}

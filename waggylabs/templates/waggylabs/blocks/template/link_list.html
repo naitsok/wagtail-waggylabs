@@ -1,0 +1,19 @@
+{% load wagtailcore_tags %}
+{% load wagtailroutablepage_tags %}
+{% load waggylabs_filters %}
+
+{% if footer %}
+    <ul class="list-unstyled overflow-hidden {{ value.text_wrap }}">
+        {% for item in value.items %}
+        <li class="mb-2">{% include_block item with footer=True  %}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <{% if 'number' in value.link_list_style %}ol{% else %}ul{% endif %} class="{{ value.link_list_style }}">
+        {% for item in value.items %}
+        <li class="{{ value.link_style }}">
+            {% include_block item %}
+        </li>
+        {% endfor %}
+    </{% if 'number' in value.link_list_style %}ol{% else %}ul{% endif %}>
+{% endif %}

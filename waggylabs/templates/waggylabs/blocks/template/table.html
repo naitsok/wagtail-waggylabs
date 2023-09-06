@@ -1,0 +1,89 @@
+{% load wagtailcore_tags %}
+{% load waggylabs_filters %}
+
+{% if sidebar %}
+{# rendering in the sidebar #}
+<figure class="figure">
+    <div class="waggylabs-sidebar-button-container">
+        <div class="d-flex justify-content-center border rounded ratio ratio-16x9 bg-secondary">
+            <div class="align-self-center waggylabs-sidebar-label">
+                <h5 id="pl-el-{{ id }}">{% if page.table_caption_label %}{{ page.table_caption_label }}{% else %}Table{% endif %}</h5>
+            </div>
+        </div>
+        {% if visual_settings.preview_buttons_icon_location == 'end' %}
+        <button type="button" class="{{ visual_settings.preview_buttons_style }} waggylabs-sidebar-button" data-bs-toggle="modal" data-bs-target="#modal-{{ id }}">
+            {{ visual_settings.preview_buttons_text }}
+            {% if visual_settings.preview_buttons_icon|is_icon %}
+            <i class="{{  visual_settings.preview_buttons_icon|icon_class }}{% if  visual_settings.preview_buttons_text %} ms-1{% endif %}"></i>
+            {% endif %}
+        </button>
+        {% else %}
+        <button type="button" class="{{ visual_settings.preview_buttons_style }} waggylabs-sidebar-button" data-bs-toggle="modal" data-bs-target="#modal-{{ id }}">
+            {% if visual_settings.preview_buttons_icon|is_icon %}
+            <i class="{{  visual_settings.preview_buttons_icon|icon_class }}{% if  visual_settings.preview_buttons_text %} me-1{% endif %}"></i>
+            {% endif %}
+            {{ visual_settings.preview_buttons_text }}
+        </button>
+        {% endif %}
+    </div>
+    {% if value.footer %}
+    <div class="figure-caption">{{ value.footer|markdown:page.pk|safe }}</div>
+    {% endif %}
+    {% if value.caption %}
+    <figcaption class="figure-caption">
+        {% if page.table_caption_label %}<p class="me-2 waggylabs-entity-label" id="sb-el-{{ id }}">{{ page.table_caption_label }}</p>{% endif %}
+        {{ value.caption|markdown:page.pk|safe }}
+    </figcaption>
+    {% endif %}
+</figure>
+{% elif modal %}
+{# Modals are always renedered on the main page because they are not working well in case of rendering inside sticky sidebar tabs #}
+<div class="modal fade" id="modal-{{ id }}" tabindex="-1" aria-labelledby="modal-el-{{ id }}" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-el-{{ id }}">{% if page.table_caption_label %}{{ page.table_caption_label }}{% endif %}</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive" id="modal-bl-{{ id }}">
+                    <table class="table caption-top align-middle">
+                        {% if value.caption %}
+                        <caption class="figure-caption">
+                            {{ value.caption|markdown:page.pk|safe }}
+                        </caption>
+                        {% endif %}
+                        {% include_block value.bound_blocks.table %}
+                        <tfoot class="table-group-divider">
+                            <tr>
+                                {% if value.footer %}
+                                <td colspan="{{ value.table.data.0|length }}" class="figure-caption">{{ value.footer|markdown:page.pk|safe }}</td>
+                                {% endif %}
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="table-responsive waggylabs-label-table" {% if value.label %}id="{{ value.label }}-{{ page.pk }}"{% endif %}>
+    <table class="table caption-top align-middle">
+        {% if value.caption %}
+        <caption class="figure-caption">
+            {% if page.table_caption_label %}<p class="me-2 waggylabs-entity-label" id="el-{{ id }}">{{ page.table_caption_label }}</p>{% endif %}
+            {{ value.caption|markdown:page.pk|safe }}
+        </caption>
+        {% endif %}
+        {% include_block value.bound_blocks.table %}
+        <tfoot class="table-group-divider">
+            <tr>
+                {% if value.footer %}
+                <td colspan="{{ value.table.data.0|length }}" class="figure-caption">{{ value.footer|markdown:page.pk|safe }}</td>
+                {% endif %}
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endif %}

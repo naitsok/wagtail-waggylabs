@@ -1,0 +1,3 @@
+POSTGRES_DB=waggylabs_db
+POSTGRES_USER=waggylabs_db
+POSTGRES_PASSWORD=waggylabs_db

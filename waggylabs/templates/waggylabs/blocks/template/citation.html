@@ -1,0 +1,2 @@
+{# Citation number will be generated after final javascript page processing. #}
+<p>({% if value.link %}<a id="{{ value.label }}-{{ page.pk }}" href="{{ value.link }}" class="waggylabs-label-cite">**</a>{% else %}<span id="{{ value.label }}-{{ page.pk }}" class="waggylabs-label-cite">**</span>{% endif %}) {{ value.citation }}</p>

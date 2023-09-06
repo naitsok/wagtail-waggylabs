@@ -1,0 +1,9 @@
+.w-panel__wrapper label { display: inline; }
+.login .login-logo { margin: 2rem auto 0; width: 4rem; }
+.sidebar .w-logo-padding { padding: 0.5rem; }
+.sidebar--slim .w-logo-padding { padding: 0.2rem; }
+.w-field--captcha_field div.w-field__input { display: flex; gap: 0.5rem; }
+.w-captcha-refresh .button { height: 100% !important; }
+.login .reset-password { display: block; margin: -1rem 0 1.5rem; }
+.ui-menu-item { color: var(--w-color-text-context); }
+/* .w-field--captcha_field div.w-field__input input[type=text] { flex-basis: 100%; } */

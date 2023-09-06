@@ -1,0 +1,85 @@
+/* General tweaks for Bootstrap */
+/* Background */
+.bg-tertiary { background-color: var(--bs-tertiary-bg); }
+/* Font */
+.fs-7 { font-size: 0.75rem !important; }
+.fs-8 { font-size: 0.5rem !important; }
+/* Some Bootstrap blocks do not have bottom margin */
+.block-margin { margin-bottom: 1rem; }
+/* Image fit for the Card horizontal layout: waggylabs/frontend_blocks/card.html */
+.img-fluid-h { max-width: 100%; }
+/* Adds margin between link icon and link text for links on navbar and in cards of card grid */
+.icon-margin { margin-right: 0.5rem; }
+/* Additional viewport based height classes */
+.max-vh-50 { height: 50vh; }
+.max-vh-60 { height: 60vh; }
+.max-vh-70 { height: 70vh; }
+.max-vh-80 { height: 80vh; }
+.max-vh-90 { height: 90vh; }
+/* Inline pargarphs of markdown within captions. */
+.figure-caption p { display: inline; }
+/* Tables */
+.table p { margin-bottom: 0px; }
+.table { border: none !important; }
+/* Card with no border, padding and marging */
+.card-header p { margin-bottom: 0 !important; }
+.mp-0 .card-body { margin-right: 0; padding-right: 0; margin-left: 0; padding-left: 0; }
+.mp-0 .card-header { border: 0; margin-right: 0; padding-right: 0; margin-left: 0; padding-left: 0; background-color: var(--bs-body-bg) !important; }
+.p-mb-0 p { margin-bottom: 0; }
+li p { display: inline; margin-bottom: 0 !important; }
+a p { display: inline; margin-bottom: 0 !important; }
+button p { display: inline; margin-bottom: 0 !important; }
+.btn p { display: inline; margin-bottom: 0 !important; }
+/* List group tweaks */
+.list-group-item-primary.active { color: var(--bs-white) !important; background-color: var(--bs-primary) !important; border-color: var(--bs-primary) !important; }
+.list-group-item-secondary.active { color: var(--bs-white) !important; background-color: var(--bs-secondary) !important; border-color: var(--bs-secondary) !important; }
+.list-group-item-success.active { color: var(--bs-white) !important; background-color: var(--bs-success) !important; border-color: var(--bs-success) !important; }
+.list-group-item-danger.active { color: var(--bs-white) !important; background-color: var(--bs-danger) !important; border-color: var(--bs-danger) !important; }
+.list-group-item-dark.active { color: var(--bs-white) !important; background-color: var(--bs-dark) !important; border-color: var(--bs-dark) !important; }
+.list-group-item-warning.active { color: var(--bs-black) !important; background-color: var(--bs-warning) !important; border-color: var(--bs-warning) !important; }
+.list-group-item-info.active { color: var(--bs-black) !important; background-color: var(--bs-info) !important; border-color: var(--bs-info) !important; }
+.list-group-item-light.active { color: var(--bs-black) !important; background-color: var(--bs-light) !important; border-color: var(--bs-light) !important; }
+/* Sidebar */
+/* .nav-tabs { border-bottom: 0; }
+.nav-tabs li.nav-item { border-bottom: 0; } */
+.waggylabs-sidebar-top { top: 6rem; } /* so that sticky-top does not go in front of the nevbar */
+.waggylabs-overflow-max-height { height: calc(100vh - 7rem); overflow-y: auto; scrollbar-color: transparent transparent; scrollbar-width: thin; }
+.waggylabs-overflow-max-height:hover { scrollbar-color: var(--bs-secondary-bg) transparent; }
+.waggylabs-sidebar-z-index { z-index: 120 !important; } /* needed to avoid collision with MathJax menu and preview */
+.waggylabs-sidebar-label { position: unset; top: unset; left: unset; width: unset; height: unset; }
+.waggylabs-sidebar-button { position: absolute; opacity: 0; top: 50%; left: 50%; transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); }
+.waggylabs-sidebar-button-container { position: relative; }
+.waggylabs-sidebar-button-container:hover .waggylabs-sidebar-button { opacity: 1; }
+.waggylabs-sidebar-toc a:hover { text-decoration: underline; }
+.waggylabs-sidebar-toc .ps-0 { padding-left: 0rem !important; }
+.waggylabs-sidebar-toc .ps-1 { padding-left: 1rem !important; }
+.waggylabs-sidebar-toc .ps-2 { padding-left: 2rem !important; }
+.waggylabs-sidebar-toc .ps-3 { padding-left: 3rem !important; }
+.waggylabs-sidebar-toc .ps-4 { padding-left: 4rem !important; }
+.waggylabs-sidebar-toc .ps-5 { padding-left: 5rem !important; }
+
+/* Footer */
+.footer a { color: var(--bs-body-color); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* MathJax menu tweaks */
+div.CtxtMenu_MenuFrame { z-index: 1501 !important;} /* Change of z-index for menu to appear above Bootstrap tab panes */
+div.CtxtMenu_MenuFrame div,span { z-index: 1502 !important;} /* Change of z-index for menu to appear above Bootstrap tab panes */
+
+/* Styles for references to figures, tables, listings */
+span.reference { font-family: 'Courier New', Courier; font-size: 100%; font-weight: bold; }
+span.reference a { text-decoration: none; }
+
+/* MathJax tweaks */
+.MathJax_ref { font-family: 'Courier New', Courier !important; font-size: 88.4% !important; font-weight: bold !important; }
+.MJX-TEX mjx-mtd { scroll-margin-top: 80px; }
+
+/* Wagtail userbar tweaks */
+.w-dialog .w-dialog__box { z-index: 5050 !important; }
+
+/* WaggyLabs classes */
+/* Bold figure, table, embed, etc labels */
+.waggylabs-entity-label { font-weight: bold; }
+/* Classes for columns block */
+.c-flex { display: flex; flex-flow: row wrap; }
+.c-flex-fill { flex: 1; min-width: 0; }

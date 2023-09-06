@@ -1,0 +1,60 @@
+{% load wagtailcore_tags %}
+{% load wagtailroutablepage_tags %}
+{% load waggylabs_filters %}
+
+
+<dl class="row">
+    {% if value.show_user %}
+    {% if value.show_header %}
+        <dt class="col-sm-3 {{ value.row_header_style }}">
+            {{ value.user_header }}
+        </dt>
+    {% endif %}
+    {# TODO: add correct link after developing #}
+    <dd class="{{ value.dd_width }} {{ value.row_data_style }}">
+        <a href="#">
+        {% if value.show_avatar and value.avatar_location != 'end' %}<span class="me-1">{{ value.avatar }}</span>{% endif %}
+        {% if value.full_name %}{{ value.full_name }}{% else %}{{ value.username }}{% endif %}
+        {% if value.show_avatar and value.avatar_location == 'end' %}<span class="ms-1">{{ value.avatar }}</span>{% endif %}
+        </a>
+    </dd>
+    {% endif %}
+    {% if value.email_header %}
+    {% if value.show_header %}
+        <dt class="col-sm-3 {{ value.row_header_style }}">
+            {{ value.email_header }}
+        </dt>
+    {% endif %}
+    <dd class="{{ value.dd_width }} {{ value.row_data_style }}">
+        <a href="mailto:{{ value.email }}">{{ value.email }}</a>
+    </dd>
+    {% endif %}
+    {% if value.show_first_published_at %}
+    {% if value.show_header %}
+        <dt class="col-sm-3 {{ value.row_header_style }}">
+            {{ value.first_published_at_header }}
+        </dt>
+    {% endif %}
+    <dd class="{{ value.dd_width }} {{ value.row_data_style }}">
+        {% if value.datatime_style == 'timesince' %}
+            {{ value.first_published_at|timesince }} {{ value.timesince_text }}
+        {% else %}
+            {{ value.first_published_at|date:'j E, Y' }} {% if value.datatime_style == 'datetime' %}{{ value.first_published_at|time:value.time_format }}{% endif %}
+        {% endif %}
+    </dd>
+    {% endif %}
+    {% if value.show_last_published_at %}
+    {% if value.show_header %}
+        <dt class="col-sm-3 {{ value.row_header_style }}">
+            {{ value.last_published_at_header }}
+        </dt>
+    {% endif %}
+    <dd class="{{ value.dd_width }} {{ value.row_data_style }}">
+        {% if value.datatime_style == 'timesince' %} 
+            {{ value.last_published_at|timesince }} {{ value.timesince_text }}
+        {% else %}
+            {{ value.last_published_at|date:'j E, Y' }} {% if value.datatime_style == 'datetime' %}{{ value.last_published_at|time:value.time_format }}{% endif %}
+        {% endif %}
+    </dd>
+    {% endif %}
+</dl>

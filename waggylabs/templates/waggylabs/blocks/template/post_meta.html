@@ -1,0 +1,106 @@
+{% load wagtailcore_tags %}
+{% load wagtailroutablepage_tags %}
+{% load waggylabs_filters %}
+
+
+{% if value.show_categories_tags %}
+<div class="card {{ value.style }} {{ value.alignment }} mb-3">
+    {% if value.header or value.header_icon %}
+    <div class="card-header">
+        {% if value.header_icon_location == 'end' %}
+        <p class="{{ value.header_style }}">
+            {{ value.header }}
+            {% if value.header_icon|is_icon %}<i class="{{ value.header_icon|icon_class }}{% if value.header %} ms-1{% endif %}"></i>{% endif %}
+        </p>
+        {% else %}
+        <p class="{{ value.header_style }}">
+            {% if value.header_icon|is_icon %}<i class="{{ value.header_icon|icon_class }}{% if value.header %} me-1{% endif %}"></i>{% endif %}
+            {{ value.header }}
+        </p>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% if post_list_page %}
+    <div class="card-body">
+        <dl class="row mb-0">
+            {% if value.show_categories and page.post_categories.count > 0 %}
+            {% if value.show_header %}<dt class="col-sm-3 {{ value.categories_header_style }}">{{ value.categories_header }}</dt>{% endif %}
+            <dd class="{{ value.dd_width }}">
+                {% for category in page.post_categories.all %}
+                    <a class="{% if 'link' in value.categories_style %}nav-link{% endif %} {{ value.categories_style }} {% if 'btn' in value.categories_style %}mt-1{% endif %} mb-2 me-2" 
+                        href="{% routablepageurl post_list_page 'posts_by_category' category.post_category.slug %}">
+                        {{ category.post_category.name|markdown|safe }}
+                    </a>
+                {% endfor %}
+            </dd>
+            {% endif %}
+            {% if value.show_tags and page.tags.count > 0 %}
+            {% if value.show_header %}<dt class="col-sm-3 {{ value.tags_header_style }}">{{ value.tags_header }}</dt>{% endif %}
+            <dd class="{{ value.dd_width }}">
+                {% for tag in page.tags.all %}
+                    <a class="{% if 'link' in value.tags_style %}nav-link{% endif %} {{ value.tags_style }} {% if 'btn' in value.tags_style %}mt-1{% endif %} mb-2 me-2" 
+                        href="{% routablepageurl post_list_page 'posts_by_tag' tag.slug %}">
+                        {{ tag }}
+                    </a>
+                {% endfor %}
+            </dd>
+            {% endif %}
+        </dl>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+{% if value.show_sibling_posts %}
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col">
+        {% if previous_post %}
+        <div class="card {{ value.previous_post.style }} {{ value.previous_post.alignment }} mb-3">
+            {% if value.previous_post.header or value.previous_post.header_icon %}
+            <div class="card-header">
+                {% if value.previous_post.header_icon_location == 'end' %}
+                    {{ value.previous_post.header }}
+                    {% if value.previous_post.header_icon|is_icon %}<i class="{{ value.previous_post.header_icon|icon_class }}{% if value.previous_post.header %} ms-1{% endif %}"></i>{% endif %}
+                {% else %}
+                    {% if value.previous_post.header_icon|is_icon %}<i class="{{ value.previous_post.header_icon|icon_class }}{% if value.previous_post.header %} me-1{% endif %}"></i>{% endif %}
+                    {{ value.previous_post.header }}
+                {% endif %}   
+            </div>
+            {% endif %}
+            <div class="card-body {% if 'border' in value.previous_post.style %}text-{{ value.previous_post.style|slice:'6:' }}{% endif %}">
+                <h5 class="card-title">
+                    <a href="{% pageurl previous_post %}"
+                        class="{% if 'link' in value.previous_post.post_link_style %}nav-link{% endif %} {{ value.previous_post.post_link_style }} {% if 'btn' in value.previous_post.post_link_style %}mt-1{% endif %}">
+                        {{ previous_post.title }}
+                    </a>
+                </h5>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col">
+        {% if next_post %}
+        <div class="card {{ value.next_post.style }} {{ value.next_post.alignment }} mb-3">
+            {% if value.next_post.header or value.next_post.header_icon %}
+            <div class="card-header">
+                {% if value.next_post.header_icon_location == 'end' %}
+                    {{ value.next_post.header }}
+                    {% if value.next_post.header_icon|is_icon %}<i class="{{ value.next_post.header_icon|icon_class }}{% if value.next_post.header %} ms-1{% endif %}"></i>{% endif %}
+                {% else %}
+                    {% if value.next_post.header_icon|is_icon %}<i class="{{ value.next_post.header_icon|icon_class }}{% if value.next_post.header %} me-1{% endif %}"></i>{% endif %}
+                    {{ value.next_post.header }}
+                {% endif %}
+            </div>
+            {% endif %}
+            <div class="card-body {% if 'border' in value.next_post.style %}text-{{ value.next_post.style|slice:'7:' }}{% endif %}">
+                <h5 class="card-title">
+                    <a href="{% pageurl next_post %}"
+                        class="{% if 'link' in value.next_post.post_link_style %}nav-link{% endif %} {{ value.next_post.post_link_style }} {% if 'btn' in value.next_post.post_link_style %}mt-1{% endif %}">
+                        {{ next_post.title }}
+                    </a>
+                </h5>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}

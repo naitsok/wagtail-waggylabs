@@ -1,0 +1,36 @@
+{% load wagtailadmin_tags  %}
+
+<div class="{{ classname }}">
+    {% if help_text %}
+    <span>
+        <div class="help">
+            {% icon name="help" classname="default" %}
+            {{ help_text }}
+        </div>
+    </span>
+    {% endif %}
+    <div class="w-field w-100" data-contentpath="{{ children.image.block.name }}">
+        {% if children.image.block.label %}
+        <label class="w-field__label" {% if children.image.id_for_label %}for="{{ children.image.id_for_label }}"{% endif %}>{{ children.image.block.label }}{% if children.image.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+        {% endif %}
+        {{ children.image.render_form }}
+    </div>
+    <div class="w-field w-100" data-contentpath="{{ children.caption.block.name }}">
+        {% if children.caption.block.label %}
+        <label class="w-field__label" {% if children.caption.id_for_label %}for="{{ children.caption.id_for_label }}"{% endif %}>{{ children.caption.block.label }}{% if children.caption.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+        {% endif %}
+        {{ children.caption.render_form }}
+    </div>
+    <div class="waggylabs-grid-container-2">
+        {% for child in children.values %}
+        {% if child.block.name != 'image' and child.block.name != 'caption' %}
+            <div class="w-field w-100" data-contentpath="{{ child.caption.name }}">
+                {% if child.block.label %}
+                    <label class="w-field__label" {% if child.id_for_label %}for="{{ child.id_for_label }}"{% endif %}>{{ child.block.label }}{% if child.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+                {% endif %}
+                {{ child.render_form }}
+            </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+</div>

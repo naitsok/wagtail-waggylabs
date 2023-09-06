@@ -1,0 +1,54 @@
+{% load wagtailcore_tags %}
+
+<div class="waggylabs-page-body overflow-hidden" {# data-waggylabs-page="page-{{ page.pk }}" #}>
+    {% if page_in_list %}
+        {% for block in value.before_cut %}
+            {% if block.block_type != 'citation' and block.block_type != 'document' %}
+            {# these blocks a rendered at the end of the page as references #}
+                {% include_block block with id=block.id %}
+            {% endif %}
+        {% endfor %}
+        {% if value.after_cut %}
+        <div class="d-none">
+            {% for block in value.after_cut %}
+                {% if block.block_type != 'citation' and block.block_type != 'document' %}
+                {# these blocks a rendered at the end of the page as references #}
+                    {% include_block block with id=block.id after_cut=True %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% else %}
+        {% for block in value.body %}
+            {% if block.block_type != 'citation' and block.block_type != 'document' and block.block_type != 'cut' %}
+            {# these blocks a rendered at the end of the page as references #}
+                {% include_block block with id=block.id %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div {% if value.after_cut|length > 0 and page_in_list %}class="d-none"{% endif %}>
+        {% if value.literature %}
+        <h5>References</h5>
+        <div class="waggylabs-literature">
+            {% for block in value.literature %}
+                {% include_block block with id=block.id %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if value.info_meta %}
+            {% for block in value.info_meta %}
+                {% include_block block with id=block.id %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+
+    {% if value.modals and not page_in_list %}
+    <div class="waggylabs-modals">
+        {% for block in value.modals %}
+            {% include_block block with id=block.id modal=True %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>

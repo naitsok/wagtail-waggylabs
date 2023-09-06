@@ -1,0 +1,37 @@
+{% load wagtailcore_tags %}
+{% load waggylabs_filters %}
+
+<ul class="{{ value.tabs_style }} {{ value.tabs_justify }} {{ value.tabs_orientation }}" id="sidebar-tabs" role="tablist">
+    {% for item in value.items %}
+    <li class="nav-item mx-1 mt-1" role="presentation">
+        <button class="{% if 'tab' in value.tabs_style or 'btn' not in value.buttons_style %}nav-link{% if 'btn' not in value.buttons_style %} {{ value.buttons_style }}{% endif %}{% else %} {{ value.buttons_style }}{% endif %} {{ value.tabs_font_size }}{% if forloop.counter0 == 0 %} active{% endif %}" 
+            id="id-{{ item.id }}-tab-{{ forloop.counter0 }}" 
+            data-bs-toggle="tab" 
+            data-bs-target="#id-{{ item.id }}-tab-pane-{{ forloop.counter0 }}" 
+            type="button" 
+            role="tab" 
+            aria-controls="id-{{ item.id }}-tab-pane-{{ forloop.counter0 }}" 
+            aria-selected="{% if forloop.counter0 == 0 %}true{% else %}false{% endif %}">
+            {% if item.value.header_icon_location == 'end' %}
+            {{ item.value.header }}
+            {% if item.value.header_icon|is_icon %}<i class="{{ item.value.header_icon|icon_class }}{% if item.value.header %} ms-1{% endif %}"></i>{% endif %}
+            {% else %}
+            {% if item.value.header_icon|is_icon %}<i class="{{ item.value.header_icon|icon_class }}{% if item.value.header %} me-1{% endif %}"></i>{% endif %}
+            {{ item.value.header }}
+            {% endif %}
+        </button>
+    </li>
+    {% endfor %}
+</ul>
+<div class="tab-content {% if value.tabs_style == 'nav nav-tabs' %}mt-3{% endif %}" id="sidebar-tab-content">
+    {% if value.tabs_style != 'nav nav-tabs' %}<hr>{% endif %}
+    {% for item in value.items %}
+    <div class="tab-pane fade {% if forloop.counter0 == 0 %}show active{% endif %}" 
+        id="id-{{ item.id }}-tab-pane-{{ forloop.counter0 }}" 
+        role="tabpanel" 
+        aria-labelledby="id-{{ item.id }}-tab-{{ forloop.counter0 }}"
+        tabindex="0">
+        {% include_block item with sidebar_tabs=True %}
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,18 @@
+{% load wagtailcore_tags %}
+{% load waggylabs_filters %}
+
+
+<div class="{{ value.col_offset }} {{ value.col_width }} mb-3">
+    {% if value.header or value.header_icon %}
+    <h5>
+        {% if value.header_icon_location == 'end' %}
+            {{ value.header }}
+            {% if value.header_icon|is_icon %}<i class="{{ value.header_icon|icon_class }}{% if value.header %} ms-1{% endif %}"></i>{% endif %}
+        {% else %}
+            {% if value.header_icon|is_icon %}<i class="{{ value.header_icon|icon_class }}{% if value.header %} me-1{% endif %}"></i>{% endif %}
+            {{ value.header }}
+        {% endif %}
+    </h5>
+    {% endif %}
+    {% include_block value.item with footer=True %}
+</div>

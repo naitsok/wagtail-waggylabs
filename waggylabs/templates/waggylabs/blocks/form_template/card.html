@@ -1,0 +1,53 @@
+{% load wagtailadmin_tags  %}
+
+<div class="{{ classname }}">
+    {% if help_text %}
+    <span>
+        <div class="help">
+            {% icon name="help" classname="default" %}
+            {{ help_text }}
+        </div>
+    </span>
+    {% endif %}
+    <div class="w-field" data-contentpath="{{ children.image.block.name }}">
+        {% if children.image.block.label %}
+            <label class="w-field__label" {% if children.image.id_for_label %}for="{{ children.image.id_for_label }}"{% endif %}>{{ children.image.block.label }}{% if children.image.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+            {% endif %}
+        {{ children.image.render_form }}
+    </div>
+    <div class="waggylabs-grid-container-2">
+        <div class="w-field w-100" data-contentpath="{{ children.title.block.name }}">
+            {% if children.title.block.label %}
+            <label class="w-field__label" {% if children.title.id_for_label %}for="{{ children.title.id_for_label }}"{% endif %}>{{ children.title.block.label }}{% if children.title.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+            {% endif %}
+            {{ children.title.render_form }}
+        </div>
+        <div class="w-field w-100" data-contentpath="{{ children.subtitle.block.name }}">
+            {% if children.subtitle.block.label %}
+            <label class="w-field__label" {% if children.subtitle.id_for_label %}for="{{ children.subtitle.id_for_label }}"{% endif %}>{{ children.subtitle.block.label }}{% if children.subtitle.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+            {% endif %}
+            {{ children.subtitle.render_form }}
+        </div>
+        <div class="w-field w-100" data-contentpath="{{ children.style.block.name }}">
+            {% if children.style.block.label %}
+            <label class="w-field__label" {% if children.style.id_for_label %}for="{{ children.style.id_for_label }}"{% endif %}>{{ children.style.block.label }}{% if children.style.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+            {% endif %}
+            {{ children.style.render_form }}
+        </div>
+        <div class="w-field w-100" data-contentpath="{{ children.alignment.block.name }}">
+            {% if children.alignment.block.label %}
+            <label class="w-field__label" {% if children.alignment.id_for_label %}for="{{ children.alignment.id_for_label }}"{% endif %}>{{ children.alignment.block.label }}{% if children.alignment.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+            {% endif %}
+            {{ children.alignment.render_form }}
+        </div>
+    </div>
+    <div class="w-field w-100" data-contentpath="{{ children.text.block.name }}">
+        {% if children.text.block.label %}
+            <label class="w-field__label" {% if children.text.id_for_label %}for="{{ children.text.id_for_label }}"{% endif %}>{{ children.text.block.label }}{% if children.text.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+            {% endif %}
+        {{ children.text.render_form }}
+    </div>
+    <div data-contentpath="{{ children.links.block.name }}">
+        {{ children.links.render_form }}
+    </div>
+</div>

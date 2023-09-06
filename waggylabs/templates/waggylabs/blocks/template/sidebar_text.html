@@ -1,0 +1,9 @@
+{% load wagtailcore_tags %}
+{% load waggylabs_filters %}
+
+<div class="{% if not sidebar_tabs %}card {{ value.style }}{% endif %} mb-3">
+    {% include_block value.header %}
+    <div {% if not sidebar_tabs %}class="card-body"{% endif %}>
+        {{ value.text|markdown:page.pk|safe }}
+    </div>
+</div>

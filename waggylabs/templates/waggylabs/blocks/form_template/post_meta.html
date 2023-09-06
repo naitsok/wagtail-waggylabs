@@ -1,0 +1,36 @@
+{% load wagtailadmin_tags  %}
+
+<div class="{{ classname }}">
+    {% if help_text %}
+    <span>
+        <div class="help">
+            {% icon name="help" classname="default" %}
+            {{ help_text }}
+        </div>
+    </span>
+    {% endif %}
+    <div class="waggylabs-grid-container-2">
+        {% for child in children.values %}
+        {% if child.block.name != 'previous_post' and child.block.name != 'next_post' %}
+            <div class="w-field w-100" data-contentpath="{{ child.block.name }}">
+                {% if child.block.label %}
+                    <label class="w-field__label" {% if child.id_for_label %}for="{{ child.id_for_label }}"{% endif %}>{{ child.block.label }}{% if child.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+                {% endif %}
+                {{ child.render_form }}
+            </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+    <div data-contentpath="{{ children.previous_post.block.name }}">
+        {% if children.previous_post.block.label %}
+            <label class="w-field__label" {% if children.previous_post.id_for_label %}for="{{ children.previous_post.id_for_label }}"{% endif %}>{{ children.previous_post.block.label }}{% if children.previous_post.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+        {% endif %}
+        {{ children.previous_post.render_form }}
+    </div>
+    <div data-contentpath="{{ children.next_post.block.name }}">
+        {% if children.next_post.block.label %}
+            <label class="w-field__label" {% if children.next_post.id_for_label %}for="{{ children.next_post.id_for_label }}"{% endif %}>{{ children.next_post.block.label }}{% if children.next_post.block.required %}<span class="w-required-mark">*</span>{% endif %}</label>
+        {% endif %}
+        {{ children.next_post.render_form }}
+    </div>
+</div>

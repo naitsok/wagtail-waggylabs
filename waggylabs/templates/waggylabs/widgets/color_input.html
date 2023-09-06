@@ -1,0 +1,26 @@
+{% include "django/forms/widgets/input.html" %}
+<div class="waggylabs-flex-container waggylabs-color-input">
+    <div class="w-field__input">
+        <label for="checkbox_{{ widget.name }}">Use specific color</label><br />
+        <input type="checkbox" id="checkbox_{{ widget.name }}">
+    </div>
+    <div class="w-field__input">
+        <label for="color_{{ widget.name }}">Color</label><br />
+        <input type="color" id="color_{{ widget.name }}" class="button button-secondary">
+    </div>
+    <div class="w-field__input">
+        <br /><input type="text" id="text_{{ widget.name }}">
+    </div>
+    <div class="w-field__input">
+        <label for="opacity_{{ widget.name }}">Opacity</label><br />
+        <input type="range" id="opacity_{{ widget.name }}" min="0" max="1" step="0.01" list="list_{{ widget.name }}">
+        <datalist id="list_{{ widget.name }}">
+            <option value="0" label="0"></option>
+            <option value="0.5" label="0.5"></option>
+            <option value="1" label="1"></option>
+        </datalist>
+    </div>
+    <div class="w-field__input">
+        <br /><input type="number" id="number_{{ widget.name }}" min="0" max="1" step="0.01">
+    </div>
+</div>

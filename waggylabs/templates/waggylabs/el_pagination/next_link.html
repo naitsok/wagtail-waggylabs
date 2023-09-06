@@ -1,0 +1,13 @@
+{% load waggylabs_filters %}
+
+{% if value.next_page_icon or value.next_page_text %}
+<li class="page-item {% if page.is_last %}disabled{% endif %}">
+    <a href="{{ page.path }}"
+        rel="prev{% if add_nofollow %} nofollow{% endif %}"
+        data-el-querystring-key="{{ querystring_key }}"
+        class="page-link">
+        {{ value.next_page_text }}
+        {% if value.next_page_icon|is_icon %}<i class="{{ value.next_page_icon|icon_class }}{% if value.next_page_text %} ms-1{% endif %}"></i>{% endif %}
+    </a>
+</li>
+{% endif %}

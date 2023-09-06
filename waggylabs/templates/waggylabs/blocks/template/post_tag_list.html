@@ -1,0 +1,23 @@
+{% load wagtailcore_tags %}
+{% load wagtailroutablepage_tags %}
+{% load waggylabs_filters %}
+
+
+{% if not value.tags %}
+<p>The post list page is not correctly specified.</p>
+{% elif value.tags.count == 0 %}
+<p>No tags</p>
+{% else %}
+<div class="waggylabs-post-tag-list">
+    {% for tag in value.tags %}
+    <a href="{% routablepageurl value.post_list_page 'posts_by_tag' tag.tag__slug %}" 
+        class="{{ value.tags_style }} {% if 'btn' in value.tags_style %} mt-1{% endif %} mb-1 me-2{% if value.show_badges %} position-relative{% endif %}"
+        data-slug="{{ tag.tag__slug }}">
+            {{ tag.tag__name }}
+            {% if value.show_badges %}
+            <span class="{{ value.badge_location }} badge {{ value.badge_style }}">{{ tag.tag__num_posts }}</span>
+            {% endif %}
+    </a>
+    {% endfor %}
+</div>
+{% endif %}

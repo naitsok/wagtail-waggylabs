@@ -1,0 +1,14 @@
+{% load wagtailcore_tags %}
+{% load waggylabs_tags %}
+
+<div id="sidebar" class="{% sidebar_class site_settings page %} align-self-start {{ value.style }} waggylabs-sidebar-z-index {% if site_settings.navbar_placement != '' %}waggylabs-sidebar-top{% endif %}">
+    {% if value.style == 'sticky-top' %}
+    <div class="waggylabs-overflow-max-height">
+    {% endif %}
+    {% for block in value.items %}
+        {% include_block block %}
+    {% endfor %}
+    {% if value.style == 'sticky-top' %}
+    </div>
+    {% endif %}
+</div>

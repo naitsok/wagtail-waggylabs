@@ -1,0 +1,29 @@
+{% load wagtailcore_tags %}
+{% load waggylabs_filters %}
+
+
+{% if page.is_series %}
+    {% if 'group' in value.posts_style %}
+        <div class="{{ value.posts_style }}">
+            {% for post in page.post_series %}
+            <a href="{% pageurl post %}" 
+                class="{{ value.post_style }} {% if 'btn' in value.post_style %}mt-1 mb-1{% endif %}{% if post.pk == page.pk %} {{ value.current_post_style }}{% endif %}">
+                <div class="d-flex justify-content-between align-items-center p-mb-0">
+                    {{ post.title }}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <{% if 'number' in value.posts_style %}ol{% else %}ul{% endif %} class="{{ value.posts_style }}">
+            {% for post in page.post_series %}
+            <li>
+                <a href="{% pageurl post %}" 
+                    class="{{ value.post_style }} {% if 'btn' in value.post_style %}mt-1 mb-1{% endif %}{% if post.pk == page.pk %} {{ value.current_post_style }}{% endif %}">
+                    {{ post.title }}
+                </a>
+            </li>
+            {% endfor %}
+        </{% if 'number' in value.posts_style %}ol{% else %}ul{% endif %}>
+    {% endif %}
+{% endif %}

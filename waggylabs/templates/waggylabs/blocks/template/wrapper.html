@@ -1,0 +1,25 @@
+{% load wagtailcore_tags %}
+{% load waggylabs_filters %}
+
+<div class="{% if not sidebar_tabs %}card {{ value.block_style }}{% endif %} {{ value.block_alignment }} mb-3">
+    {% if value.header or value.header_icon %}
+    {% if not sidebar_tabs %}
+    <div class="card-header">
+        {% if value.header_icon_location == 'end' %}
+        <p class="{{ value.header_style }}">
+            {{ value.header }}
+            {% if value.header_icon|is_icon %}<i class="{{ value.header_icon|icon_class }}{% if value.header %} ms-1{% endif %}"></i>{% endif %}
+        </p>
+        {% else %}
+        <p class="{{ value.header_style }}">
+            {% if value.header_icon|is_icon %}<i class="{{ value.header_icon|icon_class }}{% if value.header %} me-1{% endif %}"></i>{% endif %}
+            {{ value.header }}
+        </p>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% endif %}
+    <div class="{% if sidebar_tabs %}waggylabs-sidebar-tab-item{% else %}card-body{% endif %}">
+        {% include_block value.item with id=value.item.id %}
+    </div>
+</div>

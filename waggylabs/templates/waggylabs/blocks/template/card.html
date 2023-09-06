@@ -1,0 +1,43 @@
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% load waggylabs_filters %}
+
+{% if orientation_style == 'horizontal' %}
+<div class="card mb-3 {{ height_style }} {{ value.style }} {{ value.alignment }}">
+  <div class="row g-0">
+    <div class="col-md-4">
+      {% if not after_cut %}
+      {% image value.image original class='img-fluid-h rounded-start' %}
+      {% endif %}
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ value.title }}</h5>
+        {% if value.subtitle %}<h6 class="card-subtitle mb-2 text-muted">{{ value.subtitle }}</h6>{% endif %}
+        {% include_block value.text %}
+      </div>
+      {% if value.links %}
+      <div class="card-footer">
+        {% for link in value.links %}{% include_block link %}{% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="card {{ height_style }} {{ value.style }} {{ value.alignment }}">
+  {% if not after_cut %}
+  {% image value.image original class='img-fluid card-img-top' %}
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title">{{ value.title }}</h5>
+    {% if value.subtitle %}<h6 class="card-subtitle mb-2 text-muted">{{ value.subtitle }}</h6>{% endif %}
+    {{ value.text|markdown:page.pk|safe }}
+  </div>
+  {% if value.links %}
+  <div class="card-footer">
+    {% for link in value.links %}{% include_block link %}{% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endif %}

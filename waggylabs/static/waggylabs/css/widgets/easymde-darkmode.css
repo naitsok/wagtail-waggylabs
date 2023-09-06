@@ -1,0 +1,69 @@
+.EasyMDEContainer .CodeMirror {
+    background-color: var(--w-color-surface-field);
+    color: var(--w-color-text-context);
+    border: 1px solid var(--w-color-border-field-default) !important;
+}
+
+.EasyMDEContainer .editor-toolbar, .EasyMDEContainer .editor-preview-side {
+    border-color: var(--w-color-border-field-default);
+}
+
+
+.EasyMDEContainer .CodeMirror .cm-s-easymde {
+    border-color: var(--w-color-border-field-default);
+}
+
+.EasyMDEContainer:hover .CodeMirror, .EasyMDEContainer .CodeMirror-focused, .EasyMDEContainer:hover .editor-toolbar {
+    border-color: var(--w-color-border-field-hover) !important;
+}
+
+.EasyMDEContainer .editor-toolbar > * {
+    color: var(--w-color-text-context);
+}
+
+.EasyMDEContainer .CodeMirror-cursor {
+    border-left-color: var(--w-color-text-context);
+}
+
+.EasyMDEContainer .CodeMirror-selected {
+    background-color: var(--w-color-text-context);
+    opacity: 0.6;
+}
+
+.EasyMDEContainer .CodeMirror-gutters {
+    background-color: var(--w-color-surface-field);
+    border-right-color: var(--w-color-border-field-default);
+}
+
+.EasyMDEContainer .editor-toolbar > .active, .editor-toolbar > button:hover {
+    background-color: var(--w-color-surface-field);
+    color: var(--w-color-text-context);
+}
+
+.EasyMDEContainer .cm-url, .EasyMDEContainer .cm-link, .EasyMDEContainer .cm-image {
+    color: var(--w-color-text-link-default);
+}
+
+.EasyMDEContainer .cm-link {
+    text-decoration: underline;
+}
+
+.EasyMDEContainer .cm-s-easymde .cm-comment {
+    background-color: var(--w-color-border-furniture);
+    color: var(--w-color-text-context);
+}
+
+.EasyMDEContainer .CodeMirror-fullscreen, .EasyMDEContainer .editor-toolbar.fullscreen, .EasyMDEContainer .editor-preview {
+    background-color: var(--w-color-surface-field) !important;
+    color: var(--w-color-text-context) !important;
+}
+
+.EasyMDEContainer .editor-preview pre {
+    background-color: var(--w-color-black-20);
+    padding: 1em;
+}
+
+.EasyMDEContainer .editor-preview pre code {
+    background-color: transparent;
+    box-shadow: none;
+}

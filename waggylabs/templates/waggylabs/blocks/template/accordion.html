@@ -1,0 +1,36 @@
+{% load wagtailcore_tags %}
+{% load waggylabs_filters %}
+
+<div class="mb-3">
+  <div class="accordion" id="id-{{ id }}">
+      {% for item in value.items %}
+      <div class="accordion-item">
+          <h2 class="accordion-header" id="id-{{ id }}-heading-{{ forloop.counter0 }}">
+            <button class="accordion-button{% if not item.is_open %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#id-{{ id }}-collapse-{{ forloop.counter0 }}" aria-expanded="{% if item.is_open %}true{% else %}false{% endif %}" aria-controls="id-{{ id }}-collapse-{{ forloop.counter0 }}">
+              {% if value.icon_location == 'end' %}
+                {{ item.heading }}
+                {% if item.icon|is_icon %}
+                <i class="{{ item.icon|icon_class }}{% if item.heading %} ms-1{% endif %}"></i>
+                {% endif %}
+              {% else %}
+                {% if item.icon|is_icon %}
+                <i class="{{ item.icon|icon_class }}{% if item.heading %} me-1{% endif %}"></i>
+                {% endif %}
+                {{ item.heading }}
+              {% endif %}
+            </button>
+          </h2>
+          <div id="id-{{ id }}-collapse-{{ forloop.counter0 }}" class="accordion-collapse collapse{% if item.is_open %} show{% endif %}" aria-labelledby="id-{{ id }}-heading-{{ forloop.counter0 }}" {% if value.style == 'collapsible' %}data-bs-parent="#id-{{ id }}"{% endif %}>
+            <div class="accordion-body w-100">
+              {% for block in item.body %}
+                {% if block.block_type != 'citation' and block.block_type != 'document' %}
+                {% comment %}these blocks a rendedered at the end of the page as references{% endcomment %}
+                {% include_block block with id=block.id %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% load wagtailuserbar %}
+{% load wagtailmarkdown %}
+{% load wagtailmetadata_tags %}
+{% load menu_tags %}
+
+
+{% block meta_tag %}
+    {% meta_tags %}
+{% endblock meta_tag %}
+
+{% block content %}
+
+<h1 class="{{ page.title_style }}">{{ page.title }}</h1>
+{% include_block page.body %}
+
+{% endblock content %}
+
+
+{% block js %}
+{# Page preparation scripts and MathJax typesetting #}
+<script src="{% static 'waggylabs/js/prepare-page.js' %}"></script>
+<script>
+    window.MathJax =   {
+        lastSectionNumber: 0,
+        currentEquationNumber: 0,
+        loader: {
+            load: ['[tex]/autoload', '[tex]/tagformat'],
+        },
+        tex: {
+            packages: {'[+]': ['autoload', 'tagformat']},
+            tags: 'ams',
+            tagformat: {
+                number: (n) => {
+                    MathJax.config.currentEquationNumber = n;
+                    return (n - MathJax.config.lastSectionNumber) + '';
+                },
+            },
+        },
+        startup: {
+            pageReady: () => {
+                return mathJaxPageReady();
+            },
+        },
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock js %}
