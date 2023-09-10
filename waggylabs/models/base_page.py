@@ -208,5 +208,11 @@ class BasePage(MetadataPageMixin, Page, HitCountMixin):
 
     def serve(self, request, *args, **kwargs):
         hit_count = HitCount.objects.get_for_object(self)
+        # below is needed to avoid session to be None especially on the
+        # first request
+        # otherwise the session_key is None, which is wrong for hitcount
+        # object and NOT_NULL constrain for session_key is violated
+        if not request.session.exists(request.session.session_key):
+            request.session.create()
         ViewHitCountMixin.hit_count(request, hit_count)
         return super().serve(request, *args, **kwargs)

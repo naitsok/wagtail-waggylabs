@@ -1,9 +1,9 @@
-DEBUG=1
+DJANGO_DEBUG=1
 DJANGO_ALLOWED_HOSTS=*
 DJANGO_SUPERUSER_USERNAME=suser
-DJANGO_SUPERUSER_EMAIL=suser@example.com
+DJANGO_SUPERUSER_EMAIL="suser@example.com"
 DJANGO_SUPERUSER_PASSWORD=pwd
-DJANGO_EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+DJANGO_EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"
 DJANGO_SECRET_KEY=SECRET_KEY
 DJANGO_SQL_ENGINE=django.db.backends.postgresql
 DJANGO_SQL_DATABASE=waggylabs_db

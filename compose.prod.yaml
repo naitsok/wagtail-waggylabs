@@ -14,19 +14,29 @@ services:
     container_name: waggylabs_site_prod
     build:
       context: .
-      dockerfile: ./compose/prod/Dockerfile
+      dockerfile: ./compose/prod/web/Dockerfile
     image: waggylabs_site_prod
     command: ./start.sh
     volumes:
-      - ./app/:/usr/src/app/
-    ports:
-      - 8000:8000
-    stdin_open: true
-    tty: true
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    expose:
+      - 8000
     env_file:
-      - ./compose/prod/env.sh
+      - ./compose/prod/web/env.sh
     depends_on:
       - db
+
+  nginx:
+    container_name: waggylabs_nginx_prod
+    build: ./compose/prod/nginx
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    ports:
+      - 1337:80
+    depends_on:
+      - web
 
 
   db:
@@ -35,10 +45,12 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./compose/prod/env.db.sh
+      - ./compose/prod/web/env.db.sh
 
 volumes:
   postgres_data:
+  static_volume:
+  media_volume:
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
