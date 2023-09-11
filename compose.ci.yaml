@@ -49,11 +49,14 @@ services:
 
   db:
     container_name: waggylabs-db-ci
+    build: 
+      context: .
+      cache_from:
+        - "${POSTGRES_IMAGE}"
     image: "${POSTGRES_IMAGE}"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - ./compose/prod/web/env.db.sh
+    env_file: env.db.sh
 
 volumes:
   postgres_data:
