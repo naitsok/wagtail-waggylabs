@@ -5,7 +5,6 @@ on: [push]
 env:
   WEB_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/web
   NGINX_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/nginx
-  POSTGRES_IMAGE: postgres:15.4-alpine
 
 jobs:
 
@@ -49,16 +48,10 @@ jobs:
           echo "WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL=${{ secrets.WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL }}" >> env.sh
           echo "WAGGYLABS_CAPTCHA_BASE_URL=${{ secrets.WAGGYLABS_CAPTCHA_BASE_URL }}" >> env.sh
           echo "WAGGYLABS_SEARCH_URL=${{ secrets.WAGGYLABS_SEARCH_URL }}" >> env.sh
-      - name: Add environment variables to env.db.sh
-        run: |
-          echo "POSTGRES_DB=${{ secrets.DJANGO_SQL_DATABASE }}" >> env.db.sh
-          echo "POSTGRES_USER=${{ secrets.DJANGO_SQL_USER }}" >> env.db.sh
-          echo "POSTGRES_PASSWORD=${{ secrets.DJANGO_SQL_PASSWORD }}" >> env.db.sh
       - name: Set environment variables
         run: |
           echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
           echo "NGINX_IMAGE=$(echo ${{env.NGINX_IMAGE}} )" >> $GITHUB_ENV
-          echo "POSTGRES_IMAGE=$(echo ${{env.POSTGRES_IMAGE}} )" >> $GITHUB_ENV
       - name: Log in to GitHub Packages
         run: echo ${PERSONAL_ACCESS_TOKEN} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
         env:
@@ -67,7 +60,6 @@ jobs:
         run: |
           docker pull ${{ env.WEB_IMAGE }} || true
           docker pull ${{ env.NGINX_IMAGE }} || true
-          docker pull ${{ env.POSTGRES_IMAGE }} || true
       - name: Build images
         run: |
           docker-compose -f compose.ci.yaml build
@@ -75,4 +67,3 @@ jobs:
         run: |
           docker push ${{ env.WEB_IMAGE }}
           docker push ${{ env.NGINX_IMAGE }}
-          docker push ${{ env.POSTGRES_IMAGE }}
