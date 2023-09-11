@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v1
       - name: Add environment variables to env.sh
         run: |
-          echo DJANGO_DEBUG=0 >> env.sh
+          echo DJANGO_DEBUG=0 >> .env
           echo DJANGO_EMAIL_BACKEND=${{ secrets.DJANGO_EMAIL_BACKEND }} >> env.sh
           echo DJANGO_DEFAULT_FROM_EMAIL=${{ secrets.DJANGO_DEFAULT_FROM_EMAIL }} >> env.sh
           echo DJANGO_EMAIL_HOST=${{ secrets.DJANGO_EMAIL_HOST }} >> env.sh
