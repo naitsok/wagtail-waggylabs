@@ -7,6 +7,9 @@
 # You can add other services your application may depend on here, such as a
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
+
+version: "3.8"
+
 # name: waggylabs-ci
 
 services:
@@ -46,7 +49,7 @@ services:
 
   db:
     container_name: waggylabs-db-ci
-    image: "${NGINX_IMAGE}"
+    image: "${POSTGRES_IMAGE}"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
