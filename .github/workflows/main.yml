@@ -1,0 +1,78 @@
+name: Continuous Integration and Delivery
+
+on: [push]
+
+env:
+  WEB_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/web
+  NGINX_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/nginx
+  POSTGRES_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/postgres
+
+jobs:
+
+  build:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v1
+      - name: Add environment variables to env.sh
+        run: |
+          echo DJANGO_DEBUG=0
+          echo DJANGO_EMAIL_BACKEND=${{ secrets.DJANGO_EMAIL_BACKEND }} >> env.sh
+          echo DJANGO_DEFAULT_FROM_EMAIL=${{ secrets.DJANGO_DEFAULT_FROM_EMAIL }} >> env.sh
+          echo DJANGO_EMAIL_HOST=${{ secrets.DJANGO_EMAIL_HOST }} >> env.sh
+          echo DJANGO_EMAIL_PORT=${{ secrets.DJANGO_EMAIL_PORT }} >> env.sh
+          echo DJANGO_EMAIL_USE_TLS=${{ secrets.DJANGO_EMAIL_USE_TLS }} >> env.sh
+          echo DJANGO_EMAIL_USE_SSL=${{ secrets.DJANGO_EMAIL_USE_SSL }} >> env.sh
+          echo DJANGO_EMAIL_HOST_USER=${{ secrets.DJANGO_EMAIL_HOST_USER }} >> env.sh
+          echo DJANGO_EMAIL_HOST_PASSWORD=${{ secrets.DJANGO_EMAIL_HOST_PASSWORD }} >> env.sh
+          echo DJANGO_ADMINS=${{ secrets.DJANGO_ADMINS }} >> env.sh
+          echo DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }} >> env.sh
+          echo DJANGO_INTERNAL_IPS=${{ secrets.DJANGO_INTERNAL_IPS }} >> env.sh
+          echo DJANGO_CSRF_TRUSTED_ORIGINS=${{ secrets.DJANGO_CSRF_TRUSTED_ORIGINS }} >> env.sh
+          echo DJANGO_SUPERUSER_USERNAME=${{ secrets.DJANGO_SUPERUSER_USERNAME }} >> env.sh
+          echo DJANGO_SUPERUSER_EMAIL=${{ secrets.DJANGO_SUPERUSER_EMAIL }} >> env.sh
+          echo DJANGO_SUPERUSER_PASSWORD=${{ secrets.DJANGO_SUPERUSER_PASSWORD }} >> env.sh
+          echo DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }} >> env.sh
+          echo DJANGO_SQL_ENGINE=${{ secrets.DJANGO_SQL_ENGINE }} >> env.sh
+          echo DJANGO_SQL_DATABASE=${{ secrets.DJANGO_SQL_DATABASE }} >> env.sh
+          echo DJANGO_SQL_USER=${{ secrets.DJANGO_SQL_USER }} >> env.sh
+          echo DJANGO_SQL_PASSWORD=${{ secrets.DJANGO_SQL_PASSWORD }} >> env.sh
+          echo DJANGO_SQL_HOST=${{ secrets.DJANGO_SQL_HOST }} >> env.sh
+          echo DJANGO_SQL_PORT=${{ secrets.DJANGO_SQL_PORT }} >> env.sh
+          echo DJANGO_TIME_ZONE=${{ secrets.DJANGO_TIME_ZONE }} >> env.sh
+          echo WAGTAIL_SITE_NAME=${{ secrets.WAGTAIL_SITE_NAME }} >> env.sh
+          echo WAGTAIL_PASSWORD_RESET_ENABLED=${{ secrets.WAGTAIL_PASSWORD_RESET_ENABLED }} >> env.sh
+          echo WAGTAIL_PASSWORD_MANAGEMENT_ENABLED=${{ secrets.WAGTAIL_PASSWORD_MANAGEMENT_ENABLED }} >> env.sh
+          echo WAGGYLABS_DJANGO_ADMIN_BASE_URL=${{ secrets.WAGGYLABS_DJANGO_ADMIN_BASE_URL }} >> env.sh
+          echo WAGGYLABS_WAGTAIL_ADMIN_BASE_URL=${{ secrets.WAGGYLABS_WAGTAIL_ADMIN_BASE_URL }} >> env.sh
+          echo WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL=${{ secrets.WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL }} >> env.sh
+          echo WAGGYLABS_CAPTCHA_BASE_URL=${{ secrets.WAGGYLABS_CAPTCHA_BASE_URL }} >> env.sh
+          echo WAGGYLABS_SEARCH_URL=${{ secrets.WAGGYLABS_SEARCH_URL }} >> env.sh
+      - name: Add environment variables to env.db.sh
+        run: |
+          echo POSTGRES_DB=${{ secrets.DJANGO_SQL_DATABASE }} >> env.db.sh
+          echo POSTGRES_USER=${{ secrets.DJANGO_SQL_USER }} >> env.db.sh
+          echo POSTGRES_PASSWORD=${{ secrets.DJANGO_SQL_PASSWORD }} >> env.db.sh
+      - name: Set environment variables
+        run: |
+          echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
+          echo "NGINX_IMAGE=$(echo ${{env.NGINX_IMAGE}} )" >> $GITHUB_ENV
+          echo "POSTGRES_IMAGE=$(echo ${{env.POSTGRES_IMAGE}} )" >> $GITHUB_ENV
+      - name: Log in to GitHub Packages
+        run: echo ${PERSONAL_ACCESS_TOKEN} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
+        env:
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      - name: Pull images
+        run: |
+          docker pull ${{ env.WEB_IMAGE }} || true
+          docker pull ${{ env.NGINX_IMAGE }} || true
+          docker pull ${{ env.POSTGRES_IMAGE }} || true
+      - name: Build images
+        run: |
+          docker-compose -f compose.ci.yml build
+      - name: Push images
+        run: |
+          docker push ${{ env.WEB_IMAGE }}
+          docker push ${{ env.NGINX_IMAGE }}
+          docker push ${{ env.POSTGRES_IMAGE }}

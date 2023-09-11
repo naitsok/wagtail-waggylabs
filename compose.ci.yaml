@@ -7,41 +7,46 @@
 # You can add other services your application may depend on here, such as a
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
-name: waggylabs_prod
+name: waggylabs_ci
 
 services:
   web:
-    container_name: waggylabs_site_prod
+    container_name: waggylabs_site_ci
     build:
       context: .
       dockerfile: ./compose/prod/web/Dockerfile
-    image: waggylabs_site_prod
+      cache_from:
+        - "${WEB_IMAGE}"
+    image: "${WEB_IMAGE}"
     command: ./start.sh
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
     expose:
       - 8000
-    env_file:
-      - ./compose/prod/web/env.sh
+    env_file: env.sh
     depends_on:
       - db
 
   nginx:
-    container_name: waggylabs_nginx_prod
-    build: ./compose/prod/nginx
+    container_name: waggylabs_nginx_ci
+    build: 
+      context: ./compose/prod/nginx
+      cache_from:
+        - "${NGINX_IMAGE}"
+    image: "${NGINX_IMAGE}"
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
     ports:
-      - 1337:80
+      - 80:80
     depends_on:
       - web
 
 
   db:
-    container_name: waggylabs_db_prod
-    image: postgres:15.4-alpine
+    container_name: waggylabs_db_ci
+    image: "${NGINX_IMAGE}"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:

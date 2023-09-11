@@ -25,20 +25,14 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", default="SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get("DJANGO_DEBUG", default=1)))
 
+# Email configuration
 EMAIL_BACKEND = os.environ.get("DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
-
 DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_DEFAULT_FROM_EMAIL", default="webmaster@localhost")
-
 EMAIL_HOST = os.environ.get("DJANGO_EMAIL_HOST", default="example.com")
-
 EMAIL_PORT = int(os.environ.get("DJANGO_EMAIL_PORT", default=8887))
-
 EMAIL_USE_TLS = bool(int(os.environ.get("DJANGO_EMAIL_USE_TLS", default=1)))
-
 EMAIL_USE_SSL = bool(int(os.environ.get("DJANGO_EMAIL_USE_SSL", default=0)))
-
 EMAIL_HOST_USER = os.environ.get("DJANGO_EMAIL_HOST_USER", default="webmaster")
-
 EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_HOST_PASSWORD", default="pwd")
 
 # DJANGO_ADMINS is string consisting of name,email;name,emal;name,email...
