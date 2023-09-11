@@ -48,6 +48,11 @@ jobs:
           echo "WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL=${{ secrets.WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL }}" >> env.sh
           echo "WAGGYLABS_CAPTCHA_BASE_URL=${{ secrets.WAGGYLABS_CAPTCHA_BASE_URL }}" >> env.sh
           echo "WAGGYLABS_SEARCH_URL=${{ secrets.WAGGYLABS_SEARCH_URL }}" >> env.sh
+      - name: Add environment variables to env.db.sh
+        run: |
+          echo "POSTGRES_DB=${{ secrets.DJANGO_SQL_DATABASE }}" >> env.db.sh
+          echo "POSTGRES_USER=${{ secrets.DJANGO_SQL_USER }}" >> env.db.sh
+          echo "POSTGRES_PASSWORD=${{ secrets.DJANGO_SQL_PASSWORD }}" >> env.db.sh
       - name: Set environment variables
         run: |
           echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
