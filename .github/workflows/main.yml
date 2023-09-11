@@ -70,7 +70,7 @@ jobs:
           docker pull ${{ env.POSTGRES_IMAGE }} || true
       - name: Build images
         run: |
-          docker-compose -f compose.ci.yml build
+          docker-compose -f compose.ci.yaml build
       - name: Push images
         run: |
           docker push ${{ env.WEB_IMAGE }}
