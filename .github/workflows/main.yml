@@ -132,13 +132,13 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./env.sh ./docker-compose.prod.yml ${{ secrets.DIGITAL_OCEAN_USER }}:/home
-          scp  -o StrictHostKeyChecking=no -r ./env.db.sh ./docker-compose.prod.yml ${{ secrets.DIGITAL_OCEAN_USER }}:/home
+          scp  -o StrictHostKeyChecking=no -r ./env.sh ./compose.prod.yaml ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
+          scp  -o StrictHostKeyChecking=no -r ./env.db.sh ./compose.prod.yaml ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
           ssh -o StrictHostKeyChecking=no ${{ secrets.DIGITAL_OCEAN_USER }} << 'ENDSSH'
-            cd /home
+            cd /home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
             source env.sh
             source env.db.sh
-            docker login ghcr.io -u $NAMESPACE -p $PERSONAL_ACCESS_TOKEN
+            docker login ghcr.io -u ${{ secrets.NAMESPACE }} -p ${{ secrets.PERSONAL_ACCESS_TOKEN }}
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
             docker-compose -f docker-compose.prod.yml up -d
