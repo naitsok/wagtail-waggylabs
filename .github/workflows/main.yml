@@ -120,6 +120,12 @@ jobs:
           echo "POSTGRES_DB=\"${{ secrets.DJANGO_SQL_DATABASE }}\"" >> env.db.sh
           echo "POSTGRES_USER=\"${{ secrets.DJANGO_SQL_USER }}\"" >> env.db.sh
           echo "POSTGRES_PASSWORD=\"${{ secrets.DJANGO_SQL_PASSWORD }}\"" >> env.db.sh
+      - name: Add environment variables to env.server.sh
+        run: |
+          echo "WEB_IMAGE=\"${{ env.WEB_IMAGE }}\"" >> env.server.sh
+          echo "POSTGRES_USER=\"${{ env.NGINX_IMAGE }}\"" >> env.server.sh
+          echo "NAMESPACE=\"${{ secrets.NAMESPACE }}\"" >> env.server.sh
+          echo "PERSONAL_ACCESS_TOKEN=\"${{ secrets.PERSONAL_ACCESS_TOKEN }}\"" >> env.server.sh
       - name: Add the private SSH key to the ssh-agent
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -132,14 +138,15 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./env.sh ./compose.prod.yaml ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
-          scp  -o StrictHostKeyChecking=no -r ./env.db.sh ./compose.prod.yaml ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
+          scp  -o StrictHostKeyChecking=no -r ./compose.prod.yaml ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
+          scp  -o StrictHostKeyChecking=no -r ./env.sh ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
+          scp  -o StrictHostKeyChecking=no -r ./env.db.sh ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
+          scp  -o StrictHostKeyChecking=no -r ./env.server.sh ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
           ssh -o StrictHostKeyChecking=no ${{ secrets.DIGITAL_OCEAN_USER }} << 'ENDSSH'
             cd /home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
-            source env.sh
-            source env.db.sh
-            docker login ghcr.io -u ${{ secrets.NAMESPACE }} -p ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-            docker pull ${{ env.WEB_IMAGE }}
-            docker pull ${{ env.NGINX_IMAGE }}
+            source env.server.sh
+            docker login ghcr.io -u $NAMESPACE -p $PERSONAL_ACCESS_TOKEN
+            docker pull $WEB_IMAGE
+            docker pull $NGINX_IMAGE
             docker compose -f compose.prod.yaml up -d
           ENDSSH
