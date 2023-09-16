@@ -28,7 +28,7 @@ class DollarSignPostprocessor(Postprocessor):
 class EmojiPostprocessor(Postprocessor):
     """Postprocessor to convert emoji text to unicode characters."""
     def run(self, text):
-        return emoji.emojize(text, language="alias")
+        return emoji.emojize(text, language="alias", variant="emoji_type")
 
 
 class StrikethroughExtension(Extension):

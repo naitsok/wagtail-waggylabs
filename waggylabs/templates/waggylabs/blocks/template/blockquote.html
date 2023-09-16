@@ -1,7 +1,7 @@
 {% load wagtailcore_tags %}
 {% load waggylabs_filters %}
 
-<figure id="{{ value.label }}" class="mb-3 waggylabs-label-blockquote">
+<figure id="{{ value.label }}-{{ page.pk }}" class="mb-3 waggylabs-label-blockquote">
     <blockquote class="blockquote">
         <div class="d-flex">
             {% if value.show_icon %}<div class="me-3"><i class="bi bi-quote"></i></div>{% endif %}

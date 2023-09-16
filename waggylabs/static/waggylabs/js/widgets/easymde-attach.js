@@ -226,7 +226,7 @@ function collectEqRefs() {
 function collectRefs() {
     const refs = collectEqRefs();
     // collect figures, listings, embeds, tables
-    const refTypes = ['figure', 'table', 'listing', 'embed'];
+    const refTypes = ['figure', 'table', 'listing', 'embed', 'blockquote'];
     refTypes.forEach((refType) => {
         document.querySelectorAll('.waggylabs-label-' + refType).forEach((el) => {
             const input = el.getElementsByTagName('input')[0];

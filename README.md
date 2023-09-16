@@ -311,5 +311,5 @@ Will be released as soon as Docker containers are fully functional.
 ## Future plans
 
 1. [Stimulus](https://stimulus.hotwired.dev/) for the frontend.
-
 2. Comments for posts.
+3. Improve the editor's markdown editor further. Now autocomplete function is not working properly in all the cases.
