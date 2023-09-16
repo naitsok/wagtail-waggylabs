@@ -4,7 +4,7 @@ from django.core.management.commands.makemigrations import Command as OriginalCo
 
 IGNORED_MISSING_MIGRATIONS = {
     'hitcount',
-    'wagtailmentus',
+    'wagtailmenus',
 }
 
 
