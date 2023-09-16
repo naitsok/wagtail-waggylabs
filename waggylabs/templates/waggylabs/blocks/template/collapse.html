@@ -3,9 +3,8 @@
 
 <p>
     {% if value.icon_location == 'end' %}
-    <button 
+    <a href="#collapse-{{ id }}"
         class="{{ value.button_style }}" 
-        type="button" 
         data-bs-toggle="collapse" 
         data-bs-target="#id-{{ id }}" 
         aria-expanded="false" 
@@ -14,20 +13,19 @@
         {% if value.icon|is_icon %}
         <i class="{{ value.icon|icon_class }}{% if value.text %} ms-1{% endif %}"></i>
         {% endif %}
-    </button>
+    </a>
     {% else %}
-        <button 
-            class="{{ value.button_style }}" 
-            type="button" 
-            data-bs-toggle="collapse" 
-            data-bs-target="#id-{{ id }}" 
-            aria-expanded="false" 
-            aria-controls="id-{{ id }}">
-            {% if value.icon|is_icon %}
-            <i class="{{ value.icon|icon_class }}{% if value.text %} me-1{% endif %}"></i>
-            {% endif %}
-            {{ value.text }}
-        </button>
+    <a href="#collapse-{{ id }}"
+        class="{{ value.button_style }}" 
+        data-bs-toggle="collapse" 
+        data-bs-target="#id-{{ id }}" 
+        aria-expanded="false" 
+        aria-controls="id-{{ id }}">
+        {% if value.icon|is_icon %}
+        <i class="{{ value.icon|icon_class }}{% if value.text %} me-1{% endif %}"></i>
+        {% endif %}
+        {{ value.text }}
+    </a>
     {% endif %}
 </p>
 <div class="collapse" id="id-{{ id }}">

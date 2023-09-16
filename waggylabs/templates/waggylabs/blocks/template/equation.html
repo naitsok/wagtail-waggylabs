@@ -9,19 +9,19 @@
             <p>{{ value.equation }}</p>
         </div>
         {% if visual_settings.preview_buttons_icon_location == 'end' %}
-        <button type="button" class="{{ visual_settings.preview_buttons_style }} waggylabs-sidebar-button" data-bs-toggle="modal" data-bs-target="#modal-{{ id }}">
+        <a href="#modal-{{ id }}" class="{{ visual_settings.preview_buttons_style }} waggylabs-sidebar-button" data-bs-toggle="modal" data-bs-target="#modal-{{ id }}">
             {{ visual_settings.preview_buttons_text }}
             {% if visual_settings.preview_buttons_icon|is_icon %}
             <i class="{{  visual_settings.preview_buttons_icon|icon_class }}{% if  visual_settings.preview_buttons_text %} ms-1{% endif %}"></i>
             {% endif %}
-        </button>
+        </a>
         {% else %}
-        <button type="button" class="{{ visual_settings.preview_buttons_style }} waggylabs-sidebar-button" data-bs-toggle="modal" data-bs-target="#modal-{{ id }}">
+        <a href="#modal-{{ id }}" class="{{ visual_settings.preview_buttons_style }} waggylabs-sidebar-button" data-bs-toggle="modal" data-bs-target="#modal-{{ id }}">
             {% if visual_settings.preview_buttons_icon|is_icon %}
             <i class="{{  visual_settings.preview_buttons_icon|icon_class }}{% if  visual_settings.preview_buttons_text %} me-1{% endif %}"></i>
             {% endif %}
             {{ visual_settings.preview_buttons_text }}
-        </button>
+        </a>
         {% endif %}
     </div>
     {% if value.caption %}

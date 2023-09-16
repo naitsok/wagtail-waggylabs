@@ -127,7 +127,7 @@ jobs:
           mkdir -p ~/.ssh
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-add < (echo "${{ secrets.PRIVATE_KEY }}" | base64 -d)
+          ssh-add <(echo "${{ secrets.PRIVATE_KEY }}" | base64 -d)
       - name: Build and deploy images on DigitalOcean
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
