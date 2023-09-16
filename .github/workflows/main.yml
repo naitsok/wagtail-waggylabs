@@ -123,7 +123,7 @@ jobs:
       - name: Add environment variables to env.server.sh
         run: |
           echo "WEB_IMAGE=\"${{ env.WEB_IMAGE }}\"" >> env.server.sh
-          echo "POSTGRES_USER=\"${{ env.NGINX_IMAGE }}\"" >> env.server.sh
+          echo "NGINX_IMAGE=\"${{ env.NGINX_IMAGE }}\"" >> env.server.sh
           echo "NAMESPACE=\"${{ secrets.NAMESPACE }}\"" >> env.server.sh
           echo "PERSONAL_ACCESS_TOKEN=\"${{ secrets.PERSONAL_ACCESS_TOKEN }}\"" >> env.server.sh
       - name: Add the private SSH key to the ssh-agent
