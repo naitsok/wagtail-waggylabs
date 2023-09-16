@@ -24,10 +24,16 @@ sys.exit(0)
 
 END
 }
-until postgres_ready; do
+seconds=30
+until postgres_ready || [ $seconds -eq 0 ]; do
   >&2 echo 'Waiting for PostgreSQL to become available...'
   sleep 1
+  ((seconds--))
 done
->&2 echo 'PostgreSQL is available'
+if [ $seconds = 0 ]; then
+	>&2 echo 'PostgreSQL is unavailable'
+else
+	>&2 echo 'PostgreSQL is available'
+fi
 
 exec "$@"

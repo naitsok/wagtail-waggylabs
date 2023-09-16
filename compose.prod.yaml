@@ -22,7 +22,7 @@ services:
       - media_volume:/home/app/web/mediafiles
     expose:
       - 8000:8000
-    env_file: env.sh
+    env_file: ./env.sh
     depends_on:
       - db
 
@@ -43,7 +43,7 @@ services:
     image: postgres:15.4-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    env_file: env.db.sh
+    env_file: ./env.db.sh
 
 volumes:
   postgres_data:
