@@ -15,10 +15,7 @@ name: waggylabs-prod
 services:
   web:
     container_name: waggylabs-site-prod
-    build:
-      context: .
-      dockerfile: ./compose/prod/web/Dockerfile
-    image: waggylabs-site-prod
+    image: "${WEB_IMAGE}"
     command: ./start.sh
     volumes:
       - static_volume:/home/app/web/staticfiles
@@ -31,7 +28,7 @@ services:
 
   nginx:
     container_name: waggylabs-nginx-prod
-    build: ./compose/prod/nginx
+    image: "${NGINX_IMAGE}"
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
