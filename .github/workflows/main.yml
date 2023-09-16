@@ -139,7 +139,7 @@ jobs:
             source env.sh
             source env.db.sh
             docker login ghcr.io -u ${{ secrets.NAMESPACE }} -p ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-            docker pull $WEB_IMAGE
-            docker pull $NGINX_IMAGE
+            docker pull ${{ env.WEB_IMAGE }}
+            docker pull ${{ env.NGINX_IMAGE }}
             docker-compose -f docker-compose.prod.yml up -d
           ENDSSH
