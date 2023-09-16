@@ -14,7 +14,6 @@ version: "3.8"
 
 services:
   web:
-    container_name: waggylabs-site-ci
     build:
       context: .
       dockerfile: ./compose/prod/web/Dockerfile
@@ -32,7 +31,6 @@ services:
       - db
 
   nginx:
-    container_name: waggylabs-nginx-ci
     build: 
       context: ./compose/prod/nginx
       cache_from:
@@ -48,7 +46,6 @@ services:
 
 
   db:
-    container_name: waggylabs-db-ci
     image: postgres:15.4-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
