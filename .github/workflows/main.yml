@@ -49,9 +49,9 @@ jobs:
           echo "WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL=\"${{ secrets.WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL }}\"" >> env.sh
           echo "WAGGYLABS_CAPTCHA_BASE_URL=\"${{ secrets.WAGGYLABS_CAPTCHA_BASE_URL }}\"" >> env.sh
           echo "WAGGYLABS_SEARCH_URL=\"${{ secrets.WAGGYLABS_SEARCH_URL }}\"" >> env.sh
-          echo "WAGGYLABS_SEARCH_URL=\"${{ secrets.VIRTUAL_HOST }}\"" >> env.sh
-          echo "WAGGYLABS_SEARCH_URL=\"${{ secrets.VIRTUAL_PORT }}\"" >> env.sh
-          echo "WAGGYLABS_SEARCH_URL=\"${{ secrets.LETSENCRYPT_HOST }}\"" >> env.sh
+          echo "VIRTUAL_HOST=\"${{ secrets.VIRTUAL_HOST }}\"" >> env.sh
+          echo "VIRTUAL_PORT=\"${{ secrets.VIRTUAL_PORT }}\"" >> env.sh
+          echo "LETSENCRYPT_HOST=\"${{ secrets.LETSENCRYPT_HOST }}\"" >> env.sh
       - name: Add environment variables to env.db.sh
         run: |
           echo "POSTGRES_DB=\"${{ secrets.DJANGO_SQL_DATABASE }}\"" >> env.db.sh
@@ -125,6 +125,9 @@ jobs:
           echo "WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL=\"${{ secrets.WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL }}\"" >> env.sh
           echo "WAGGYLABS_CAPTCHA_BASE_URL=\"${{ secrets.WAGGYLABS_CAPTCHA_BASE_URL }}\"" >> env.sh
           echo "WAGGYLABS_SEARCH_URL=\"${{ secrets.WAGGYLABS_SEARCH_URL }}\"" >> env.sh
+          echo "VIRTUAL_HOST=\"${{ secrets.VIRTUAL_HOST }}\"" >> env.sh
+          echo "VIRTUAL_PORT=\"${{ secrets.VIRTUAL_PORT }}\"" >> env.sh
+          echo "LETSENCRYPT_HOST=\"${{ secrets.LETSENCRYPT_HOST }}\"" >> env.sh
           echo "WEB_IMAGE=\"${{ env.WEB_IMAGE }}\"" >> env.sh
           echo "NGINX_IMAGE=\"${{ env.NGINX_IMAGE }}\"" >> env.sh
       - name: Add environment variables to env.db.sh
