@@ -26,8 +26,8 @@ services:
     depends_on:
       - db
 
-  nginx:
-    container_name: waggylabs-nginx-prod
+  nginx-proxy:
+    container_name: waggylabs-nginx-proxy-prod
     image: "${NGINX_IMAGE}"
     restart: always
     ports:
@@ -54,7 +54,7 @@ services:
       - vhost:/etc/nginx/vhost.d
       - acme:/etc/acme.sh
     depends_on:
-      - nginx
+      - nginx-proxy
 
   db:
     container_name: waggylabs-db-prod
