@@ -29,6 +29,7 @@ jobs:
           echo "DJANGO_ALLOWED_HOSTS=\"${{ secrets.DJANGO_ALLOWED_HOSTS }}\"" >> env.sh
           echo "DJANGO_INTERNAL_IPS=\"${{ secrets.DJANGO_INTERNAL_IPS }}\"" >> env.sh
           echo "DJANGO_CSRF_TRUSTED_ORIGINS=\"${{ secrets.DJANGO_CSRF_TRUSTED_ORIGINS }}\"" >> env.sh
+          echo "DJANGO_SECURE_PROXY_SSL_HEADER=\"${{ secrets.DJANGO_SECURE_PROXY_SSL_HEADER }}\"" >> env.sh
           echo "DJANGO_SUPERUSER_USERNAME=\"${{ secrets.DJANGO_SUPERUSER_USERNAME }}\"" >> env.sh
           echo "DJANGO_SUPERUSER_EMAIL=\"${{ secrets.DJANGO_SUPERUSER_EMAIL }}\"" >> env.sh
           echo "DJANGO_SUPERUSER_PASSWORD=\"${{ secrets.DJANGO_SUPERUSER_PASSWORD }}\"" >> env.sh
@@ -48,11 +49,19 @@ jobs:
           echo "WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL=\"${{ secrets.WAGGYLABS_WAGTAIL_DOCUMENTS_BASE_URL }}\"" >> env.sh
           echo "WAGGYLABS_CAPTCHA_BASE_URL=\"${{ secrets.WAGGYLABS_CAPTCHA_BASE_URL }}\"" >> env.sh
           echo "WAGGYLABS_SEARCH_URL=\"${{ secrets.WAGGYLABS_SEARCH_URL }}\"" >> env.sh
+          echo "WAGGYLABS_SEARCH_URL=\"${{ secrets.VIRTUAL_HOST }}\"" >> env.sh
+          echo "WAGGYLABS_SEARCH_URL=\"${{ secrets.VIRTUAL_PORT }}\"" >> env.sh
+          echo "WAGGYLABS_SEARCH_URL=\"${{ secrets.LETSENCRYPT_HOST }}\"" >> env.sh
       - name: Add environment variables to env.db.sh
         run: |
           echo "POSTGRES_DB=\"${{ secrets.DJANGO_SQL_DATABASE }}\"" >> env.db.sh
           echo "POSTGRES_USER=\"${{ secrets.DJANGO_SQL_USER }}\"" >> env.db.sh
           echo "POSTGRES_PASSWORD=\"${{ secrets.DJANGO_SQL_PASSWORD }}\"" >> env.db.sh
+      - name: Add environment variables to env.acme.sh
+        run: |
+          echo "DEFAULT_EMAIL=\"${{ secrets.LETSENCRYPT_EMAIL }}\"" >> env.acme.sh
+          echo "ACME_CA_URI=\"https://acme-staging-v02.api.letsencrypt.org/directory\"" >> env.acme.sh
+          echo "NGINX_PROXY_CONTAINER=\"nginx\"" >> env.acme.sh
       - name: Set environment variables
         run: |
           echo "WEB_IMAGE=$(echo ${{ env.WEB_IMAGE }} )" >> $GITHUB_ENV
@@ -96,6 +105,7 @@ jobs:
           echo "DJANGO_ALLOWED_HOSTS=\"${{ secrets.DJANGO_ALLOWED_HOSTS }}\"" >> env.sh
           echo "DJANGO_INTERNAL_IPS=\"${{ secrets.DJANGO_INTERNAL_IPS }}\"" >> env.sh
           echo "DJANGO_CSRF_TRUSTED_ORIGINS=\"${{ secrets.DJANGO_CSRF_TRUSTED_ORIGINS }}\"" >> env.sh
+          echo "DJANGO_SECURE_PROXY_SSL_HEADER=\"${{ secrets.DJANGO_SECURE_PROXY_SSL_HEADER }}\"" >> env.sh
           echo "DJANGO_SUPERUSER_USERNAME=\"${{ secrets.DJANGO_SUPERUSER_USERNAME }}\"" >> env.sh
           echo "DJANGO_SUPERUSER_EMAIL=\"${{ secrets.DJANGO_SUPERUSER_EMAIL }}\"" >> env.sh
           echo "DJANGO_SUPERUSER_PASSWORD=\"${{ secrets.DJANGO_SUPERUSER_PASSWORD }}\"" >> env.sh
@@ -122,6 +132,11 @@ jobs:
           echo "POSTGRES_DB=\"${{ secrets.DJANGO_SQL_DATABASE }}\"" >> env.db.sh
           echo "POSTGRES_USER=\"${{ secrets.DJANGO_SQL_USER }}\"" >> env.db.sh
           echo "POSTGRES_PASSWORD=\"${{ secrets.DJANGO_SQL_PASSWORD }}\"" >> env.db.sh
+      - name: Add environment variables to env.acme.sh
+        run: |
+          echo "DEFAULT_EMAIL=\"${{ secrets.LETSENCRYPT_EMAIL }}\"" >> env.acme.sh
+          echo "ACME_CA_URI=\"https://acme-staging-v02.api.letsencrypt.org/directory\"" >> env.acme.sh
+          echo "NGINX_PROXY_CONTAINER=\"nginx\"" >> env.acme.sh
       - name: Add environment variables to .env
         run: |
           echo "WEB_IMAGE=\"${{ env.WEB_IMAGE }}\"" >> .env
@@ -143,6 +158,7 @@ jobs:
           scp  -o StrictHostKeyChecking=no -r ./compose.prod.yaml ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
           scp  -o StrictHostKeyChecking=no -r ./env.sh ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
           scp  -o StrictHostKeyChecking=no -r ./env.db.sh ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
+          scp  -o StrictHostKeyChecking=no -r ./env.acme.sh ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
           scp  -o StrictHostKeyChecking=no -r ./.env ${{ secrets.DIGITAL_OCEAN_USER }}:/home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
           ssh -o StrictHostKeyChecking=no ${{ secrets.DIGITAL_OCEAN_USER }} << 'ENDSSH'
             cd /home/${{ secrets.DIGITAL_OCEAN_USERNAME }}/
@@ -151,4 +167,5 @@ jobs:
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
             docker compose -f compose.prod.yaml up -d
+            docker image prune -f
           ENDSSH

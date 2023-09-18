@@ -36,14 +36,32 @@ services:
       cache_from:
         - "${NGINX_IMAGE}"
     image: "${NGINX_IMAGE}"
+    restart: always
+    ports:
+      - 443:443
+      - 80:80
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
-    ports:
-      - 80:80
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - web
 
+  acme-companion:
+    image: nginxproxy/acme-companion
+    env_file:
+      - ./.env.staging.proxy-companion
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - acme:/etc/acme.sh
+    depends_on:
+      - nginx
 
   db:
     image: postgres:15.4-alpine
@@ -55,3 +73,7 @@ volumes:
   postgres_data:
   static_volume:
   media_volume:
+  certs:
+  html:
+  vhost:
+  acme:

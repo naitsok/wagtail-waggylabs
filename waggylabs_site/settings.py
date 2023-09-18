@@ -49,6 +49,9 @@ MANAGERS = ADMINS
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split()
 INTERNAL_IPS = os.environ.get("DJANGO_INTERNAL_IPS", default="").split()
 CSRF_TRUSTED_ORIGINS = os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", default="http://localhost:1337").split()
+if os.environ.get("DJANGO_SECURE_PROXY_SSL_HEADER"):
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 
 
 # Application definition
