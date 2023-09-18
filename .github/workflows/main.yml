@@ -136,7 +136,7 @@ jobs:
         run: |
           echo "DEFAULT_EMAIL=\"${{ secrets.LETSENCRYPT_EMAIL }}\"" >> env.acme.sh
           echo "ACME_CA_URI=\"https://acme-staging-v02.api.letsencrypt.org/directory\"" >> env.acme.sh
-          echo "NGINX_PROXY_CONTAINER=nginx-proxy" >> env.acme.sh
+          echo "NGINX_PROXY_CONTAINER=waggylabs-nginx-prod" >> env.acme.sh
       - name: Add environment variables to .env
         run: |
           echo "WEB_IMAGE=\"${{ env.WEB_IMAGE }}\"" >> .env

@@ -10,7 +10,6 @@
 
 version: "3.8"
 
-# name: waggylabs-ci
 
 services:
   web:
@@ -30,7 +29,7 @@ services:
     depends_on:
       - db
 
-  nginx-proxy:
+  nginx:
     build: 
       context: ./compose/prod/nginx
       cache_from:
@@ -60,7 +59,7 @@ services:
       - vhost:/etc/nginx/vhost.d
       - acme:/etc/acme.sh
     depends_on:
-      - nginx-proxy
+      - nginx
 
   db:
     image: postgres:15.4-alpine
