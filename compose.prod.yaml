@@ -54,7 +54,7 @@ services:
       - vhost:/etc/nginx/vhost.d
       - acme:/etc/acme.sh
     depends_on:
-      - nginx-proxy
+      - nginx
 
   db:
     container_name: waggylabs-db-prod
