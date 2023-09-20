@@ -1,4 +1,7 @@
-# Wagtail-Waggylabs 1.0b1
+[![PyPI](https://img.shields.io/badge/PyPI-v1.0.2-orange)](https://pypi.org/project/wagtail-waggylabs/)
+[![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+
+# Wagtail-Waggylabs 1.0.2
 
 WaggyLabs is a [Django](https://docs.djangoproject.com/) and [Wagtail CMS](https://wagtail.org/>) app for scientific blogs and research group websites. Check the [demo page](https://ktamarov.com/waggylabs-demo) to see most of the features.
 
@@ -300,13 +303,22 @@ The following list shows the important settings of different packages used in Wa
 
 ## Changelog
 
-### Version 1.0b1
+### Version 1.0.2
 
-Initial release with the main features presented in the "Features" section on top of the page.
+- Changed the migrations in order to show well-composed demo page after migraitions applied for the first time.
+- Added badges to the README.md
+
+### Version 1.0.1
+
+- Minor bugfixes in Link blocks to correctly display buttons and links.
 
 ### Version 1.0
 
-Will be released as soon as Docker containers are fully functional.
+WaggyLabs package and WaggyLabs site are ready and can be launched on a DigitalOcean droplet via Docker containers.
+
+### Version 1.0b1
+
+Initial release with the main features presented in the "Features" section on top of the page.
 
 ## Future plans
 
