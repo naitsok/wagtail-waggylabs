@@ -1,7 +1,7 @@
-[![PyPI](https://img.shields.io/badge/PyPI-v1.0.2-orange)](https://pypi.org/project/wagtail-waggylabs/)
+[![PyPI](https://img.shields.io/badge/PyPI-v1.0.3-orange)](https://pypi.org/project/wagtail-waggylabs/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 
-# Wagtail-Waggylabs 1.0.2
+# Wagtail-Waggylabs 1.0.3
 
 WaggyLabs is a [Django](https://docs.djangoproject.com/) and [Wagtail CMS](https://wagtail.org/>) app for scientific blogs and research group websites. Check the [demo page](https://ktamarov.com/waggylabs-demo) to see most of the features.
 
@@ -302,6 +302,10 @@ The following list shows the important settings of different packages used in Wa
     ```
 
 ## Changelog
+
+### Version 1.0.3
+
+- Updated Django and Wagtail to 5.0.1 and 5.2.2 versions. Dependent packages has been also updated.
 
 ### Version 1.0.2
 
