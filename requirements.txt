@@ -1,7 +1,7 @@
 # beautifulsoup4>=4.11.2
 Django>=5.0.1
 django-el-pagination>=4.0.0
-django-taggit>=4.0.0
+django-taggit>=4.0.0,<5.
 django-hitcount>=1.3.5
 django-simple-captcha>=0.6.0
 emoji>=2.9.0
