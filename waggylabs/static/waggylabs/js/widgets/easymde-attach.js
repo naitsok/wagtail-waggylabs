@@ -20,7 +20,7 @@
  * @param {string} pattern - math pattern
  * @returns CSS class for the Font Awesome icon, free version has only subscript and superscript icons
  */
-function getIcon(pattern) {
+function getMenuItemIcon(pattern) {
     switch (pattern) {
         case "subscript": return "fa fa-subscript";
         case "superscript": return "fa fa-superscript";
@@ -33,7 +33,7 @@ function getIcon(pattern) {
  * @param {string} pattern - math pattern
  * @returns Text for button because there are no suitable Font Awesome Icons
  */
-function getText(pattern) {
+function getMenuItemText(pattern) {
     switch (pattern) {
         case "equation": return "{Eq}";
         case "matrix": return "[M]";
@@ -114,8 +114,8 @@ function createToolbar(toolbarConfig) {
                 }
                 editor.element.codemirror.focus();
             },
-            className: getIcon(pattern),
-            text: getText(pattern),
+            className: getMenuItemIcon(pattern),
+            text: getMenuItemText(pattern),
             title: pattern.charAt(0).toUpperCase() + pattern.slice(1)
         }
     }
@@ -175,6 +175,7 @@ function createToolbar(toolbarConfig) {
         action: (editor) => CodeMirror.showHint(
             editor.codemirror,
             getHinter(),
+            {completeSingle: false}
         ),
     });
     shortcuts["autocomplete"] = "Cmd-Space";
@@ -254,7 +255,7 @@ function getHinter() {
     const endRegex = new RegExp(/\\end\{([^\}]*)$/i);
     const commandRegex = new RegExp(/\\[\w]*$/i);
     // const emojiRegex = new RegExp(/\:[\w\'\(\)\_\.]*$/i);
-    const emojiRegex1 = new RegExp(/:[\w\_\(\)\'\.\!]*?$/i);
+    const emojiRegex1 = new RegExp(/:$/i);
     const emojiRegex2 = new RegExp(/:([\w\_\(\)\'\.\!]+?):$/i);
 
     return function hintFunction(cm) {
@@ -376,28 +377,28 @@ function getEndCompletion() {
     const closeBracketRegex = new RegExp(/^.*\}/i);
     // const emojiRegex = new RegExp(/:([\w\_\(\)\'\.\!]+?):$/i);
 
-    return function endCompetionFunction(mde) {
-        const cur = mde.codemirror.getCursor();
-        const lineTillCursor = mde.codemirror.getRange({line: cur.line, ch: 0}, cur);
-        const lineAfterCursor = mde.codemirror.getLine(cur.line).slice(cur.ch);
+    return function endCompetionFunction(cm) {
+        const cur = cm.getCursor();
+        const lineTillCursor = cm.getRange({line: cur.line, ch: 0}, cur);
+        const lineAfterCursor = cm.getLine(cur.line).slice(cur.ch);
 
         const beginMatch = beginRegex.exec(lineTillCursor);
         if (beginMatch) {
-            mde.codemirror.replaceRange('}\n\n\\end{' + beginMatch[1] + '}\n', cur);
-            mde.codemirror.setCursor({line: cur.line + 1, ch: 0});
+            cm.replaceRange('}\n\n\\end{' + beginMatch[1] + '}\n', cur);
+            cm.setCursor({line: cur.line + 1, ch: 0});
             return false;
         }
 
         const textCommandsMatch = textCommandsRegex.exec(lineTillCursor);
-        if (textCommandsMatch) {
-            mde.codemirror.replaceRange('{', cur);
+        if (textCommandsMatch && (cm.getRange(cur, {line: cur.line, ch: cur.ch + 1}) !== "{")) {
+            cm.replaceRange('{', cur);
             return true;
         }
 
         const labelCommandsMatch = labelCommandsRegex.exec(lineTillCursor);
         const closeBracketMatch = closeBracketRegex.exec(lineAfterCursor);
         if (labelCommandsMatch && !closeBracketMatch) {
-            mde.codemirror.replaceRange('}', cur);
+            cm.replaceRange('}', cur);
             return false;
         }
         
@@ -660,15 +661,16 @@ function easymdeAttach(id) {
         document.getElementById(id).value = mde.value();
     });
 
-    mde.codemirror.on("keypress", (event) => {
-        if (event.key !== "Backspace") {
+    mde.codemirror.on("keyup", (cm, event) => {
+        const ignoreKeys = ["Meta", "Alt", "Control", "F1", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "ArrowUp", "ArrowLeft", "ArrowRight", "ArrowDown", "ContextMenu", " ", "Enter", "Shift", "CapsLock", "Tab", "Delete", "Home", "PrintScreen", "PageUp", "PageDown", "NumLock", "Insert", "Backspace", "Escape", undefined];
+        if (!ignoreKeys.includes(event.key)) {
             CodeMirror.showHint(mde.codemirror, getHinter(), {completeSingle: false});
         }
     });
     // const completionFunction = getEndCompletion();
     mde.codemirror.on("endCompletion", () => {
         if (!mde.codemirror.noCompletion) {
-            if (getEndCompletion()(mde)) {
+            if (getEndCompletion()(mde.codemirror)) {
                 // let event = document.createEvent()
                 // document.getElementById(id).dispatchEvent(new KeyboardEvent('keypress',{'key':'Ctrl+Space'}));
                 CodeMirror.showHint(mde.codemirror, getHinter(), {completeSingle: false});
