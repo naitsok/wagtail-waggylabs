@@ -58,6 +58,7 @@ class MarkdownTextarea(WidgetWithScript, forms.widgets.Textarea):
                 "waggylabs/js/widgets/markdown-mathjax.js",
                 "waggylabs/js/widgets/markdown-emoji.js",
                 "waggylabs/js/widgets/markdown.js",
+                "waggylabs/js/widgets/easymde-hint.js",
                 "waggylabs/js/widgets/easymde-attach.js",
             ),
         )
