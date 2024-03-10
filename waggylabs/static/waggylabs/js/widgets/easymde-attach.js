@@ -324,11 +324,6 @@ function easymdeAttach(id) {
     });
     
     mde.options.previewRender = (plainText, preview) => {
-        // if (mde.isSideBySideActive()) {
-        //     setTimeout(() => {
-        //         resetMathJax(mde);
-        //     }, 1000);
-        // }
         return renderMarkdown(plainText, mde);
     };
     mde.render();
@@ -356,14 +351,6 @@ function easymdeAttach(id) {
     // const completionFunction = getEndCompletion();
     mde.codemirror.on("endCompletion", () => {
         getEndCompletion()(mde.codemirror);
-        // if (!mde.codemirror.noCompletion) {
-        //     if (getEndCompletion()(mde.codemirror)) {
-        //         // let event = document.createEvent()
-        //         // document.getElementById(id).dispatchEvent(new KeyboardEvent('keypress',{'key':'Ctrl+Space'}));
-        //         CodeMirror.showHint(mde.codemirror, getHinter(), {completeSingle: false});
-        //     }
-        // }
-
     });
 
     // Attach the mde object to the text area.

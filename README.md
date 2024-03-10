@@ -1,7 +1,7 @@
-[![PyPI](https://img.shields.io/badge/PyPI-v1.0.3-orange)](https://pypi.org/project/wagtail-waggylabs/)
+[![PyPI](https://img.shields.io/badge/PyPI-v1.0.4-orange)](https://pypi.org/project/wagtail-waggylabs/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 
-# Wagtail-Waggylabs 1.0.3
+# Wagtail-Waggylabs 1.0.4
 
 WaggyLabs is a [Django](https://docs.djangoproject.com/) and [Wagtail CMS](https://wagtail.org/>) app for scientific blogs and research group websites. Check the [demo page](https://ktamarov.com/waggylabs-demo) to see most of the features.
 
@@ -302,6 +302,11 @@ The following list shows the important settings of different packages used in Wa
     ```
 
 ## Changelog
+
+
+### Version 1.0.4
+
+- Improved Autocomplete function on EasyMDE editors used in Wagtail admin. Improved MathJax typesetting when previewing Markdown in EasyMDE.
 
 ### Version 1.0.3
 
