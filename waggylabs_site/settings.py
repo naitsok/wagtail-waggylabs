@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     "waggylabs",
     
     "wagtail.contrib.forms",
-    "wagtail.contrib.modeladmin",
+    # "wagtail.contrib.modeladmin",
     "wagtail.contrib.redirects",
     "wagtail.contrib.routable_page",
     "wagtail.contrib.settings",
