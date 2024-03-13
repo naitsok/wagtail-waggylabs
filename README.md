@@ -1,11 +1,7 @@
-[![PyPI](https://img.shields.io/badge/PyPI-v1.1.0alpha1-orange)](https://pypi.org/project/wagtail-waggylabs/)
+[![PyPI](https://img.shields.io/badge/PyPI-v1.0.4-orange)](https://pypi.org/project/wagtail-waggylabs/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 
-# Wagtail-Waggylabs 1.1.0alpha1
-
-This branch is intended to migrate Waggylabs to Wagtail 6.x. There are, however, sever issues that prevent doing it right now. In particular, `wagtail.contrib.modeladmin` has been removed from Wagtail6 breaking the [Wagtailmenus](https://github.com/jazzband/wagtailmenus) package. Even though `wagtail.contrib.modeladmin` can be installed as a separate package, I do not see any reason to try to migrate to Wagtail 6.x until Wagtailmenus is updated to work with Wagtail 6.x. This is also because installing `wagtail.contrib.modeladmin` does not result in properly working Wagtailmenus anyway (see e.g. [comment](https://github.com/jazzband/wagtailmenus/issues/459#issuecomment-1946361047)).
-
-Meanwhile all the Waggylabs dependencies are migrated to Wagtail 6.x, I will focus on adopting Stimulus and writing a better working Markdown autocomplete feature.
+# Wagtail-Waggylabs 1.0.4
 
 WaggyLabs is a [Django](https://docs.djangoproject.com/) and [Wagtail CMS](https://wagtail.org/>) app for scientific blogs and research group websites. Check the [demo page](https://ktamarov.com/waggylabs-demo) to see most of the features.
 
@@ -306,6 +302,11 @@ The following list shows the important settings of different packages used in Wa
     ```
 
 ## Changelog
+
+
+### Version 1.0.4
+
+- Improved Autocomplete function on EasyMDE editors used in Wagtail admin. Improved MathJax typesetting when previewing Markdown in EasyMDE.
 
 ### Version 1.0.3
 

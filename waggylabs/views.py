@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from wagtail.models import Page, Site
-from wagtail.search.models import Query
+from wagtail.contrib.search_promotions.models import Query
 from wagtail.search.utils import parse_query_string
 
 from waggylabs.models import WaggyLabsSettings
@@ -33,9 +33,9 @@ def search(request):
     # Because search_results is not a Queryset object
     # django-el-pagination is of no use
     page = request.GET.get('page', None)
-    settings = WaggyLabsSettings.for_request(request=request)
+    settings_wl = WaggyLabsSettings.for_request(request=request)
     # request.get
-    paginator = Paginator(search_results, settings.search_results_per_page)
+    paginator = Paginator(search_results, settings_wl.search_results_per_page)
     try:
         search_results = paginator.page(page)
     except PageNotAnInteger:
@@ -48,7 +48,7 @@ def search(request):
         'search_query': query_string,
         'search_tokens': get_tokens_from_query(query),
         'search_results': search_results,
-        'site_settings': settings,
+        'site_settings': settings_wl,
     })
 
 
