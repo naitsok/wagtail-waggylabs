@@ -18,11 +18,11 @@ class EquationBlock(StructBlock):
                     'matrix, align, etc. environments are supported). '),
         easymde_min_height='150px',
         easymde_max_height='150px',
-        easymde_combine='false',
+        easymde_stex_combine='false',
         easymde_toolbar_config=('subscript,superscript,equation,matrix,'
                                 'align,multiline,split,gather,alignat,'
                                 'flalign,|,preview,side-by-side,fullscreen'),
-        easymde_status='false',
+        easymde_statusbar='false',
     )
     caption = MarkdownBlock(
         required=False,
@@ -31,11 +31,11 @@ class EquationBlock(StructBlock):
                     'in the dialog box or in the sidebar.'),
         easymde_min_height='100px',
         easymde_max_height='100px',
-        easymde_combine='true',
+        easymde_stex_combine='true',
         easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_status='false',
+        easymde_statusbar='false',
     )
     label = LabelBlock(
         max_length=50,

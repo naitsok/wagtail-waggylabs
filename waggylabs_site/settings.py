@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.settings",
     "wagtail.contrib.styleguide",
     "wagtail.contrib.table_block",
+    "wagtail.contrib.search_promotions",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -225,12 +226,6 @@ WAGTAILSEARCH_BACKENDS = {
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = os.environ.get("WAGTAILADMIN_BASE_URL", "http://example.com")
-# Search backed for development
-WAGTAILSEARCH_BACKENDS = {
-    'default': {
-        'BACKEND': 'wagtail.search.backends.database',
-    }
-}
 
 # Disable password reset since it is personal site and the user is created using command line
 WAGTAIL_PASSWORD_RESET_ENABLED = bool(int(os.environ.get("WAGTAIL_PASSWORD_RESET_ENABLED", default=1)))

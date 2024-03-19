@@ -45,13 +45,13 @@ class AccordionContentBlock(StreamBlock):
     text = MarkdownBlock(
         required=False,
         help_text='',
-        easymde_combine='true',
+        easymde_stex_combine='true',
         easymde_min_height='150px',
         easymde_max_height='150px',
         easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_status='false'
+        easymde_statusbar='false'
     )
     
     class Meta:

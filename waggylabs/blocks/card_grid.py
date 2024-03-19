@@ -39,11 +39,11 @@ class CardBlock(StructBlock):
         help_text=None,
         easymde_min_height='100px',
         easymde_max_height='100px',
-        easymde_combine='true',
+        easymde_stex_combine='true',
         easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_status='false',)
+        easymde_statusbar='false',)
     links = LinksBlock(required=False)
     
     class Meta:

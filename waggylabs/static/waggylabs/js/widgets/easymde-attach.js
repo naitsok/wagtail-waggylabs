@@ -240,9 +240,9 @@ function collectTypesetMarkdown(editor) {
 
     var allMarkdownElem = document.getElementById("waggylabs-all-markdown");
     if (!allMarkdownElem) {
-        allMarkdownElem = document.createElement('div');
+        allMarkdownElem = document.createElement("div");
         allMarkdownElem.setAttribute("id", "waggylabs-all-markdown");
-        allMarkdownElem.style.display = 'none';
+        allMarkdownElem.style.display = "none";
         wrapper.insertBefore(allMarkdownElem, wrapper.lastChild);
     }
     allMarkdownElem.innerHTML = renderMarkdown(allMarkdown, editor);
@@ -293,33 +293,32 @@ function toggleSideBySide(editor) {
     EasyMDE.toggleSideBySide(editor);
 }
 
-function easymdeAttach(id) {
+function easymdeAttach(id, autodownload, minHeight, maxHeight, stexCombine, toolbar, statusbar) {
     var textArea = document.getElementById(id);
-    var toolbar = undefined;
-    var shortcuts = undefined;
-    if (textArea.getAttribute("easymde-toolbar")) {
+    shortcuts = undefined;
+    if (toolbar) {
         [toolbar, shortcuts] = createToolbar(textArea.getAttribute("easymde-toolbar"));
     } 
 
     var mde = new EasyMDE({
         element: textArea,
         autofocus: false,
-        autoDownloadFontAwesome: true, // autoDownloadFontAwesome,
+        autoDownloadFontAwesome: autodownload, // autoDownloadFontAwesome,
         lineNumbers: true,
-        minHeight: textArea.getAttribute("easymde-min-height") || undefined,
-        maxHeight: textArea.getAttribute("easymde-max-height") || undefined,
+        minHeight: minHeight,
+        maxHeight: maxHeight,
         overlayMode: {
             mode: CodeMirror.getMode({}, "stex"),
-            combine: textArea.getAttribute("easymde-combine").toLowerCase() === "true",
+            combine: stexCombine,
         },
         renderingConfig: {
             codeSyntaxHighlighting: true,
         },
         spellChecker: false,
-        showIcons: (textArea.getAttribute("easymde-toolbar")) ? undefined : ["strikethrough", "code", "table"],
-        toolbar: (textArea.getAttribute("easymde-toolbar")) ? toolbar : undefined,
-        shortcuts: (textArea.getAttribute("easymde-toolbar")) ? shortcuts : undefined,
-        status: createStatusBar(textArea.getAttribute("easymde-status")),
+        showIcons: toolbar ? undefined : ["strikethrough", "code", "table"],
+        toolbar: toolbar ? toolbar : undefined,
+        shortcuts: toolbar ? shortcuts : undefined,
+        status: statusbar,
         unorderedListStyle: "-",
     });
     
@@ -364,6 +363,7 @@ function easymdeAttach(id) {
 /*
 * Used to initialize content when MarkdownFields are used in admin panels.
 */
+/*
 function refreshCodeMirror(e) {
     setTimeout(() => {
             e.CodeMirror.refresh();
@@ -371,17 +371,14 @@ function refreshCodeMirror(e) {
         }, 200
     );
 }
+*/
 
-// Wagtail < 3.0
-document.addEventListener('shown.bs.tab', () => {
-    document.querySelectorAll('.CodeMirror').forEach((e) => {
-        refreshCodeMirror(e);
-    });
-});
-
-// Wagtail >= 3.0
 document.addEventListener('wagtail:tab-changed', () => {
-    document.querySelectorAll('.CodeMirror').forEach((e) => {
-        refreshCodeMirror(e);
+    document.querySelectorAll('.CodeMirror').forEach(function(e) {
+        setTimeout(
+            function() {
+                e.CodeMirror.refresh();
+            }, 100
+        );
     });
 });

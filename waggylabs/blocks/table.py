@@ -22,11 +22,11 @@ class TableFigureBlock(StructBlock):
         help_text=None,
         easymde_min_height='150px',
         easymde_max_height='150px',
-        easymde_combine='true',
+        easymde_stex_combine='true',
         easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_status='false',
+        easymde_statusbar='false',
     )
     image = ImageChooserBlock(
         required=True,
@@ -39,11 +39,11 @@ class TableFigureBlock(StructBlock):
         help_text=None,
         easymde_min_height='100px',
         easymde_max_height='100px',
-        easymde_combine='true',
+        easymde_stex_combine='true',
         easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_status='false',
+        easymde_statusbar='false',
     )
     label = LabelBlock(
         max_length=50,
@@ -194,11 +194,11 @@ class TableBlock(StructBlock):
         help_text=None,
         easymde_min_height='100px',
         easymde_max_height='100px',
-        easymde_combine='true',
+        easymde_stex_combine='true',
         easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_status='false',
+        easymde_statusbar='false',
     )
     table = BareTableBlock(
         required=True,
@@ -215,11 +215,11 @@ class TableBlock(StructBlock):
         help_text=None,
         easymde_min_height='100px',
         easymde_max_height='100px',
-        easymde_combine='true',
+        easymde_stex_combine='true',
         easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_status='false',
+        easymde_statusbar='false',
     )
     label = LabelBlock(
         max_length=50,
