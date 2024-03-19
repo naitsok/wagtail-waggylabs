@@ -24,10 +24,13 @@ class MarkdownTextarea(forms.Textarea):
         super().__init__(attrs)
 
     def build_attrs(self, *args, **kwargs):
-        attrs = super().build_attrs(*args, **kwargs)
-        for key in attrs.keys():
+        bare_attrs = super().build_attrs(*args, **kwargs)
+        attrs = {}
+        for key in bare_attrs.keys():
             if key.startswith("easymde"):
-                attrs["data-" + key + "-value"] = attrs.pop(key)
+                attrs["data-" + key + "-value"] = bare_attrs[key]
+            else:
+                attrs[key] = bare_attrs[key]
         
         attrs["data-controller"] = "easymde"
 

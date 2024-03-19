@@ -297,7 +297,7 @@ function easymdeAttach(id, autodownload, minHeight, maxHeight, stexCombine, tool
     var textArea = document.getElementById(id);
     shortcuts = undefined;
     if (toolbar) {
-        [toolbar, shortcuts] = createToolbar(textArea.getAttribute("easymde-toolbar"));
+        [toolbar, shortcuts] = createToolbar(toolbar);
     } 
 
     var mde = new EasyMDE({

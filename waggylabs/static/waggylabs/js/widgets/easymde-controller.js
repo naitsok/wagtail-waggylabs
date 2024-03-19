@@ -13,4 +13,4 @@ class EasyMDEContainer extends window.StimulusModule.Controller {
     }
 }
 
-window.wagtail.app.register('easymde', EasyMDEContainer);
+window.wagtail.app.register("easymde", EasyMDEContainer);
