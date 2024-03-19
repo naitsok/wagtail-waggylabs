@@ -52,14 +52,6 @@ def global_admin_css():
         '<link rel="stylesheet" href="{}">',
         static('waggylabs/css/admin-styles.css')
     )
-
-
-@hooks.register('insert_editor_css')
-def editor_css():
-    return format_html(
-        '<link rel="stylesheet" href="{}">',
-        static('waggylabs/css/editor-styles.css')
-    )
     
 
 @hooks.register('insert_global_admin_js')
