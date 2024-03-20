@@ -21,13 +21,13 @@ class CarouselItem(StructBlock):
         required=False,
         label=_('Text in front of the picture'),
         help_text='',
-        easymde_min_height='100px',
-        easymde_max_height='100px',
-        easymde_stex_combine='true',
-        easymde_toolbar_config=('bold,italic,strikethrough,heading,|,unordered-list,'
+        min_height='100px',
+        max_height='100px',
+        stex_combine='true',
+        toolbar=('bold,italic,strikethrough,heading,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_statusbar='false',
+        statusbar='false',
     )
     interval = IntegerBlock(
         required=False,

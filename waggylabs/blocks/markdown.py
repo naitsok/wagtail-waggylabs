@@ -37,38 +37,37 @@ class MarkdownBlock(TextBlock):
                  max_length=None,
                  min_length=None,
                  validators=(),
-                 easymde_min_height='300px', # e.g. 300px, valid CSS string
-                 easymde_max_height='300px', # e.g. 500px, valid CSS string
-                 easymde_stex_combine='true', # combine or not stex mode with markdown mode
+                 min_height='300px', # e.g. 300px, valid CSS string
+                 max_height='300px', # e.g. 500px, valid CSS string
+                 stex_combine='true', # combine or not stex mode with markdown mode
                  # valid string that contains list of valid EasyMDE buttons + math patterns seprated by comma
                  # see the easymde-attach.js for availabe math patterns
-                 easymde_toolbar_config=('bold,italic,strikethrough,heading,|,'
+                 toolbar=('bold,italic,strikethrough,heading,|,'
                                          'unordered-list,ordered-list,link,|,code,'
                                          'subscript,superscript,equation,matrix,'
                                          'align,|,preview,side-by-side,fullscreen,guide'),
-                # status bar: true for default status bar, false for no status bar, 
-                # string of comma-separated names for custom status bar
-                easymde_statusbar='true',
+                 # status bar: true for default status bar, false for no status bar, 
+                 # string of comma-separated names for custom status bar
+                 statusbar='true',
                  **kwargs):
-        self.easymde_min_height = easymde_min_height
-        self.easymde_max_height = easymde_max_height
-        self.easymde_stex_combine = easymde_stex_combine
-        self.easymde_toolbar_config = easymde_toolbar_config
-        self.easymde_statusbar = easymde_statusbar
+        self.min_height = min_height
+        self.max_height = max_height
+        self.stex_combine = stex_combine
+        self.toolbar = toolbar
+        self.statusbar = statusbar
         super().__init__(required, help_text, rows, max_length, min_length, validators, **kwargs)
     
     @cached_property
     def field(self):
         field_kwargs = {
-            'widget': MarkdownTextarea(attrs={
-                'rows': self.rows,
-                'easymde-min-height': self.easymde_min_height,
-                'easymde-max-height': self.easymde_max_height,
-                'easymde-stex-combine': self.easymde_stex_combine,
-                'easymde-toolbar': self.easymde_toolbar_config,
-                'easymde-statusbar': self.easymde_statusbar,
-                })
-            }
+            'widget': MarkdownTextarea(
+                attrs={'rows': self.rows },
+                min_height=self.min_height,
+                max_height=self.max_height,
+                stex_combine=self.stex_combine,
+                toolbar=self.toolbar,
+                statusbar=self.statusbar
+            )}
         field_kwargs.update(self.field_options)
         return forms.CharField(**field_kwargs)
 

@@ -16,26 +16,26 @@ class EquationBlock(StructBlock):
         required=True,
         help_text=_('Write or paste LaTeX style equation (equation, '
                     'matrix, align, etc. environments are supported). '),
-        easymde_min_height='150px',
-        easymde_max_height='150px',
-        easymde_stex_combine='false',
-        easymde_toolbar_config=('subscript,superscript,equation,matrix,'
+        min_height='150px',
+        max_height='150px',
+        stex_combine='false',
+        toolbar=('subscript,superscript,equation,matrix,'
                                 'align,multiline,split,gather,alignat,'
                                 'flalign,|,preview,side-by-side,fullscreen'),
-        easymde_statusbar='false',
+        statusbar='false',
     )
     caption = MarkdownBlock(
         required=False,
         label=_('Equation caption'),
         help_text=_('Caption that will be displayed when the equation is shown '
                     'in the dialog box or in the sidebar.'),
-        easymde_min_height='100px',
-        easymde_max_height='100px',
-        easymde_stex_combine='true',
-        easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
+        min_height='100px',
+        max_height='100px',
+        stex_combine='true',
+        toolbar=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_statusbar='false',
+        statusbar='false',
     )
     label = LabelBlock(
         max_length=50,

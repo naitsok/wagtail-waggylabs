@@ -20,13 +20,13 @@ class TableFigureBlock(StructBlock):
         required=False,
         label=_('Table caption'),
         help_text=None,
-        easymde_min_height='150px',
-        easymde_max_height='150px',
-        easymde_stex_combine='true',
-        easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
+        min_height='150px',
+        max_height='150px',
+        stex_combine='true',
+        toolbar=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_statusbar='false',
+        statusbar='false',
     )
     image = ImageChooserBlock(
         required=True,
@@ -37,13 +37,13 @@ class TableFigureBlock(StructBlock):
         required=False,
         label=_('Table footer'),
         help_text=None,
-        easymde_min_height='100px',
-        easymde_max_height='100px',
-        easymde_stex_combine='true',
-        easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
+        min_height='100px',
+        max_height='100px',
+        stex_combine='true',
+        toolbar=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_statusbar='false',
+        statusbar='false',
     )
     label = LabelBlock(
         max_length=50,
@@ -192,13 +192,13 @@ class TableBlock(StructBlock):
         required=False,
         label=_('Table caption'),
         help_text=None,
-        easymde_min_height='100px',
-        easymde_max_height='100px',
-        easymde_stex_combine='true',
-        easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
+        min_height='100px',
+        max_height='100px',
+        stex_combine='true',
+        toolbar=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_statusbar='false',
+        statusbar='false',
     )
     table = BareTableBlock(
         required=True,
@@ -213,13 +213,13 @@ class TableBlock(StructBlock):
         required=False,
         label=_('Table footer'),
         help_text=None,
-        easymde_min_height='100px',
-        easymde_max_height='100px',
-        easymde_stex_combine='true',
-        easymde_toolbar_config=('bold,italic,strikethrough,|,unordered-list,'
+        min_height='100px',
+        max_height='100px',
+        stex_combine='true',
+        toolbar=('bold,italic,strikethrough,|,unordered-list,'
                                 'ordered-list,link,|,code,subscript,superscript,|,'
                                 'preview,side-by-side,fullscreen,guide'),
-        easymde_statusbar='false',
+        statusbar='false',
     )
     label = LabelBlock(
         max_length=50,

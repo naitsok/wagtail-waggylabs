@@ -5,34 +5,35 @@ from django.conf import settings
 class MarkdownTextarea(forms.Textarea):
     def __init__(
         self,
-        attrs={
-            "rows": 1,
-            "easymde-min-height": "100px", # e.g. 300px, valid CSS string
-            "easymde-max-height": "100px", # e.g. 500px, valid CSS string
-            "easymde-stex-combine": "true", # combine or not stex mode with markdown mode
-            # valid string that contains list of valid EasyMDE buttons + math patterns
-            # seprated by comma, see the easymde-attach.js for availabe math patterns
-            "easymde-toolbar": ("bold,italic,strikethrough,heading,|,"
+        attrs={ "rows": 1 },
+        min_height="100px", # e.g. 300px, valid CSS string
+        max_height="100px", # e.g. 500px, valid CSS string
+        stex_combine="true", # combine or not stex mode with markdown mode
+        # valid string that contains list of valid EasyMDE buttons + math patterns seprated by comma
+        # see the easymde-attach.js for availabe math patterns
+        toolbar=("bold,italic,strikethrough,heading,|,"
                                 "unordered-list,ordered-list,link,|,code,"
                                 "subscript,superscript,equation,matrix,"
                                 "align,|,preview,side-by-side,fullscreen,guide"),
-            # status bar: true for default status bar, false for no status bar,
-            # string of comma-separated names for custom status bar
-            "easymde-statusbar": "true",
-        }
+        # status bar: true for default status bar, false for no status bar, 
+        # string of comma-separated names for custom status bar
+        statusbar="true"
     ):
+        self.min_height = min_height
+        self.max_height = max_height
+        self.stex_combine = stex_combine
+        self.toolbar = toolbar
+        self.statusbar = statusbar
         super().__init__(attrs)
 
     def build_attrs(self, *args, **kwargs):
-        bare_attrs = super().build_attrs(*args, **kwargs)
-        attrs = {}
-        for key in bare_attrs.keys():
-            if key.startswith("easymde"):
-                attrs["data-" + key + "-value"] = bare_attrs[key]
-            else:
-                attrs[key] = bare_attrs[key]
-        
+        attrs = super().build_attrs(*args, **kwargs)
         attrs["data-controller"] = "easymde"
+        attrs["data-easymde-min-height-value"] = self.min_height
+        attrs["data-easymde-max-height-value"] = self.max_height
+        attrs["data-easymde-stex-combine-value"] = self.stex_combine
+        attrs["data-easymde-toolbar-value"] = self.toolbar
+        attrs["data-easymde-statusbar-value"] = self.statusbar
 
         if "autodownload_fontawesome" in getattr(settings, "WAGTAILMARKDOWN", {}):
             autodownload = (

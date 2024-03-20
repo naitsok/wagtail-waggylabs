@@ -123,7 +123,7 @@ class WaggyLabsSettings(BaseSiteSetting, ClusterableModel):
         default='',
         blank=True,
         help_text=_('Choose a specific color and opacity for the navigation bar. '
-                    'If none specified, the default theme color is used.'),
+                    'Leave empty (use "Clear" button) to use the default theme color.'),
         verbose_name=_('Navigation bar color'),
     )
     class NavbarLinkWeight(models.TextChoices):
@@ -142,7 +142,7 @@ class WaggyLabsSettings(BaseSiteSetting, ClusterableModel):
         default='',
         blank=True,
         help_text=_('Specifies the color and opacity for the navigation bar links. '
-                    'If none specified, the default theme color is used.'),
+                    'Leave empty (use "Clear" button) to use the default Bootstrap theme color.'),
         verbose_name=_('Navigation bar link color'),
     )
     navbar_hover_link_color = models.CharField(
@@ -150,7 +150,7 @@ class WaggyLabsSettings(BaseSiteSetting, ClusterableModel):
         default='',
         blank=True,
         help_text=_('Specifies the color and opacity for the navigation bar links during hover. '
-                    'If none specified, the default theme color is used.'),
+                    'Leave empty (use "Clear" button) to use the default Bootstrap theme color.'),
         verbose_name=_('Navigation bar hover link color'),
     )
     navbar_link_weight = models.CharField(
@@ -166,8 +166,7 @@ class WaggyLabsSettings(BaseSiteSetting, ClusterableModel):
         default='',
         blank=True,
         help_text=_('Specifies the color and opacity for the navigation bar active links. '
-                    'If nothing chosen, navigation bar link color is used if it was specified. '
-                    'Otherwise the default theme color is used.'),
+                    'Leave empty (use "Clear" button) to use the default Bootstrap theme color.'),
         verbose_name=_('Navigation bar active link color'),
     )
     navbar_active_link_weight = models.CharField(

@@ -1,3 +1,5 @@
+// waggylabs/static/js/easymde-controller.js
+
 class EasyMDEContainer extends window.StimulusModule.Controller {
     static values = { 
         autodownload: { type: Boolean, default: true },
