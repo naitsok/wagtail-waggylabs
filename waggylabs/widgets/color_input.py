@@ -8,7 +8,7 @@ class ColorInput(forms.TextInput):
     """
     See https://coloris.js.org/
     """
-    template_name = 'waggylabs/widgets/color_input.html'
+    template_name = 'waggylabs/widgets/input_cross_button.html'
 
     def __init__(self, attrs=None, swatches=[], theme='pill', theme_mode='auto',
                  formatToggle='true', close_button='true', clear_button='true'):

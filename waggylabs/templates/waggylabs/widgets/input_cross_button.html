@@ -1,8 +1,13 @@
-{# Deprecated WidgetWithScript, template is not used anymore #}
+{# Input widget with cross button on the right side #}
+<div class="waggylabs-input-cross-button">
+    {% include "django/forms/widgets/input.html" %}
+    <button class="button text-replace button--icon" type="button">
+        <svg class="icon icon-cross icon" aria-hidden="true"><use href="#icon-cross"></use></svg>
+    </button>
+</div>
 
-{% include "django/forms/widgets/input.html" %}
 
-{% comment "" %}
+{% comment "Deprecated WidgetWithScript, template is not used anymore" %}
 <div class="waggylabs-flex-container waggylabs-color-input">
     <div class="w-field__input">
         <label for="checkbox_{{ widget.name }}">Use specific color</label><br />

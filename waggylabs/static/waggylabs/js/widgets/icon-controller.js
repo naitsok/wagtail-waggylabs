@@ -6,8 +6,9 @@ class IconController extends window.StimulusModule.Controller {
     };
 
     connect() {
+        const cleaBtn = document.getElementById(this.element.id).nextSibling;
         // create
-        Coloris({ el: `#${this.element.id}` });
+        const color = Coloris({ el: `#${this.element.id}` });
 
         // set options after initial creation
         setTimeout(() => {

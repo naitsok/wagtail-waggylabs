@@ -11,6 +11,14 @@ class ColorController extends window.StimulusModule.Controller {
     };
 
     connect() {
+        const colorInput = document.getElementById(this.element.id);
+        const clearButton = colorInput.nextElementSibling;
+        if (clearButton) {
+            clearButton.onclick = () => { 
+                colorInput.value = '';
+                colorInput.dispatchEvent(new Event('input', { bubbles: true }));
+            };
+        }
         // create
         Coloris({ el: `#${this.element.id}` });
 
