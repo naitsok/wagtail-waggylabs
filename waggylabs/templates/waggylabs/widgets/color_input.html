@@ -1,6 +1,8 @@
 {# Deprecated WidgetWithScript, template is not used anymore #}
 
 {% include "django/forms/widgets/input.html" %}
+
+{% comment "" %}
 <div class="waggylabs-flex-container waggylabs-color-input">
     <div class="w-field__input">
         <label for="checkbox_{{ widget.name }}">Use specific color</label><br />
@@ -26,3 +28,4 @@
         <br /><input type="number" id="number_{{ widget.name }}" min="0" max="1" step="0.01">
     </div>
 </div>
+{% endcomment %}

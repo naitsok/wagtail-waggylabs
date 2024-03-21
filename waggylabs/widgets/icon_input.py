@@ -33,6 +33,40 @@ def collect_icons():
 
 
 BOOTSTRAP_ICONS = collect_icons()
+'''
+class IconInput(forms.TextInput):
+    """Widget to select Bootstrap icon.
+    See https://www.cssscript.com/tiny-fast-autocomplete/
+    """
+    
+    def __init__(self,
+                 icons=BOOTSTRAP_ICONS,
+                 attrs={
+                     'placeholder': _('Icon - start typing'),
+                     'class': 'autocomp',
+                 }):
+        self.icons = icons
+        super().__init__(attrs)
+        
+    def build_attrs(self, *args, **kwargs):
+        attrs = super().build_attrs(*args, **kwargs)
+        attrs['data-controller'] = 'icon'
+        attrs['data-icon-icons-value'] = json.dumps(self.icons)
+        return attrs
+    
+    @property
+    def media(self):
+        return forms.Media(
+            js=[
+                # load the UI library
+                "waggylabs/vendor/autocomp/autocomp.min.js",
+                # load controller JS
+                "waggylabs/js/widgets/icon-controller.js",
+            ],
+            css={"all": ["waggylabs/vendor/autocomp/autocomp.min.css"]},
+        )
+'''
+
 class IconInput(WidgetWithScript, forms.widgets.TextInput):
     """Widget to select Font Awesome icon."""
     

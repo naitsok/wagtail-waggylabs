@@ -23,7 +23,8 @@ div.waggylabs-link-wrapper div.w-field__input input { width: 90%; } */
 div.waggylabs-link-content { width: 50%; }
 div.struct-block div.help { margin-bottom: 1rem; }
 div.waggylabs-d-none h3 { display: none; }
-.w-field__input div.clr-field button { border-radius: .3125rem; margin-right: 0.3125rem; height: 2rem; }
+.w-field__input div.clr-field button { border-radius: .3125rem; margin-right: 0.3125rem; height: 2rem; left: 0.3125rem; }
+.w-field__input div.clr-field input { padding-left: 2.625rem; }
 
 /*
 div.waggylabs-color-input label { margin-right: 1.5rem; }

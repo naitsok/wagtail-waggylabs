@@ -3,20 +3,19 @@ import json
 
 from django import forms
 
-from wagtail.utils.widgets import WidgetWithScript
-
 
 class ColorInput(forms.TextInput):
     """
     See https://coloris.js.org/
     """
+    template_name = 'waggylabs/widgets/color_input.html'
 
     def __init__(self, attrs=None, swatches=[], theme='pill', theme_mode='auto',
-                 format='auto', close_button='true', clear_button='true'):
+                 formatToggle='true', close_button='true', clear_button='true'):
         self.swatches = swatches
         self.theme = theme
         self.theme_mode = theme_mode
-        self.format = format
+        self.formatToggle = formatToggle
         self.close_button = close_button
         self.clear_button = clear_button
         super().__init__(attrs=attrs)
@@ -27,7 +26,7 @@ class ColorInput(forms.TextInput):
         attrs['data-color-swatches-value'] = json.dumps(self.swatches)
         attrs['data-color-theme-value'] = self.theme
         attrs['data-color-theme-mode-value'] = self.theme_mode
-        attrs['data-color-format-value'] = self.format
+        attrs['data-color-format-toggle-value'] = self.formatToggle
         attrs['data-color-close-button-value'] = self.close_button
         attrs['data-color-clear-button-value'] = self.clear_button
         return attrs

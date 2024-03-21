@@ -3,7 +3,11 @@
 class ColorController extends window.StimulusModule.Controller {
     static values = { 
         swatches: { type: Array, default: [] }, 
-        theme: { type: String, default: 'pill' }, 
+        theme: { type: String, default: 'pill' },
+        themeMode: { type: String, default: 'auto' },
+        closeButton: { type: Boolean, default: true },
+        clearButton: { type: Boolean, default: true },
+        formatToggle: { type: Boolean, default: true },
     };
 
     connect() {
@@ -15,10 +19,10 @@ class ColorController extends window.StimulusModule.Controller {
             Coloris({ 
                 swatches: this.swatchesValue,
                 theme: this.themeValue,
-                themeMode: 'auto',
-                closeButton: true,
-                clearButton: true,
-                format: 'auto',
+                themeMode: this.themeModeValue,
+                closeButton: this.closeButtonValue,
+                clearButton: this.clearButtonValue,
+                formatToggle: this.formatToggleValue,
             });
         });
     }
