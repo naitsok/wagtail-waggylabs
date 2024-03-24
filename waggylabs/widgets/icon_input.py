@@ -33,11 +33,11 @@ def collect_icons():
 
 
 BOOTSTRAP_ICONS = collect_icons()
-'''
 class IconInput(forms.TextInput):
     """Widget to select Bootstrap icon.
     See https://www.cssscript.com/tiny-fast-autocomplete/
     """
+    template_name = 'waggylabs/widgets/input_cross_button.html'
     
     def __init__(self,
                  icons=BOOTSTRAP_ICONS,
@@ -65,8 +65,9 @@ class IconInput(forms.TextInput):
             ],
             css={"all": ["waggylabs/vendor/autocomp/autocomp.min.css"]},
         )
-'''
 
+
+'''
 class IconInput(WidgetWithScript, forms.widgets.TextInput):
     """Widget to select Font Awesome icon."""
     
@@ -106,3 +107,4 @@ class IconInputAdapter(WidgetAdapter):
         js = ["waggylabs/js/blocks/icon-input-adapter.js"]
 
 register(IconInputAdapter(), IconInput)
+'''

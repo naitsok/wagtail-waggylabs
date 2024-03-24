@@ -2,24 +2,37 @@
 
 class IconController extends window.StimulusModule.Controller {
     static values = { 
-        icons: Array,
+        // icons is object with keys: user-friedly icon name and values: bootstrap css class for icon element
+        icons: Object,
     };
 
     connect() {
-        const cleaBtn = document.getElementById(this.element.id).nextSibling;
+        const iconInput = document.getElementById(this.element.id); 
+        const clearBtn = iconInput.nextElementSibling;
         // create
-        const color = Coloris({ el: `#${this.element.id}` });
-
-        // set options after initial creation
-        setTimeout(() => {
-            Coloris({ 
-                swatches: this.swatchesValue,
-                theme: this.themeValue,
-                themeMode: 'auto',
-                closeButton: true,
-                clearButton: true,
-                format: 'auto',
-            });
+        autocomp(iconInput, {
+            onQuery: async (val) => {
+                // This callback returns an array of search results.
+                // Typically, this will be a server side fetch() request.
+                // Example:
+                // const resp = await fetch(`/search?q=${query}`);
+                // const res = await response.json();  
+                // return res;
+                const q = val.trim().toLowerCase();
+                return Object.keys(this.iconsValue).filter(s => s.startsWith(q));
+            },
+            onSelect: (val) => {
+                // Whatever is returned here is set in the input box.
+                return val;
+            },
+            onRender: (o) => {
+                const sp = document.createElement("span");
+                const i = document.createElement("i");
+                i.classList.add(...this.iconsValue[o].split(" "));
+                sp.appendChild(i);
+                sp.appendChild(document.createTextNode("&nbsp;" + o));
+                return sp;
+            },
         });
     }
 }
