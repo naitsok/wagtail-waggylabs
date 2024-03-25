@@ -25,8 +25,8 @@ div.struct-block div.help { margin-bottom: 1rem; }
 div.waggylabs-d-none h3 { display: none; }
 .waggylabs-input-cross-button { display: flex; flex-wrap: wrap; }
 .waggylabs-input-cross-button button { font-size: 0; height: inherit; width: inherit; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-color: var(--w-color-border-field-default) !important; }
+.waggylabs-input-cross-button input { padding-left: 2.625rem; border-top-right-radius: 0px; border-bottom-right-radius: 0px; }
 .waggylabs-input-cross-button div.clr-field button { border-radius: .3125rem; margin-right: 0.3125rem; height: 2rem; left: 0.3125rem; }
-.waggylabs-input-cross-button div.clr-field input { padding-left: 2.625rem; border-top-right-radius: 0px; border-bottom-right-radius: 0px; }
 
 /*
 div.waggylabs-color-input label { margin-right: 1.5rem; }

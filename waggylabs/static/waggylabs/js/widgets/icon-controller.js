@@ -27,10 +27,7 @@ class IconController extends window.StimulusModule.Controller {
             },
             onRender: (o) => {
                 const sp = document.createElement("span");
-                const i = document.createElement("i");
-                i.classList.add(...this.iconsValue[o].split(" "));
-                sp.appendChild(i);
-                sp.appendChild(document.createTextNode("&nbsp;" + o));
+                sp.innerHTML = `<i class="${this.iconsValue[o]}"></i>&nbsp;${o}`;
                 return sp;
             },
         });
