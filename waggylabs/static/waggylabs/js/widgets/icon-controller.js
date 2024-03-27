@@ -7,8 +7,30 @@ class IconController extends window.StimulusModule.Controller {
     };
 
     connect() {
-        const iconInput = document.getElementById(this.element.id); 
-        const clearBtn = iconInput.nextElementSibling;
+        const iconInput = document.getElementById(this.element.id);
+        const clearButton = iconInput.nextElementSibling;
+
+        const iconSpan = document.createElement("span");
+        iconSpan.classList.add("autocomp");
+        iconInput.parentNode.insertBefore(iconSpan, iconInput);
+
+        if (clearButton) {
+            clearButton.onclick = () => { 
+                iconInput.value = '';
+                iconSpan.innerHTML = '';
+            };
+        }
+
+        iconInput.addEventListener("keyup", () => {
+            if (iconInput.value.trim().length === 0) {
+                iconSpan.innerHTML = '';
+            }
+        });
+
+        if (iconInput.value && this.iconsValue[iconInput.value]) {
+            iconSpan.innerHTML =  `<i class="${this.iconsValue[iconInput.value]}"></i>`;
+        }
+
         // create
         autocomp(iconInput, {
             onQuery: async (val) => {
@@ -23,11 +45,14 @@ class IconController extends window.StimulusModule.Controller {
             },
             onSelect: (val) => {
                 // Whatever is returned here is set in the input box.
+                if (this.iconsValue[val]) {
+                    iconSpan.innerHTML =  `<i class="${this.iconsValue[val]}"></i>`;
+                }
                 return val;
             },
             onRender: (o) => {
                 const sp = document.createElement("span");
-                sp.innerHTML = `<i class="${this.iconsValue[o]}"></i>&nbsp;${o}`;
+                sp.innerHTML = `<i class="${this.iconsValue[o]}"></i>&nbsp;&nbsp;${o}`;
                 return sp;
             },
         });

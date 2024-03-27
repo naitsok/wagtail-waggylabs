@@ -23,10 +23,18 @@ div.waggylabs-link-wrapper div.w-field__input input { width: 90%; } */
 div.waggylabs-link-content { width: 50%; }
 div.struct-block div.help { margin-bottom: 1rem; }
 div.waggylabs-d-none h3 { display: none; }
-.waggylabs-input-cross-button { display: flex; flex-wrap: wrap; }
-.waggylabs-input-cross-button button { font-size: 0; height: inherit; width: inherit; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-color: var(--w-color-border-field-default) !important; }
-.waggylabs-input-cross-button input { padding-left: 2.625rem; border-top-right-radius: 0px; border-bottom-right-radius: 0px; }
+/* adjustments for waggylabs/widgets/input_cross_button.html template */
+.waggylabs-input-cross-button { display: flex; }
+.waggylabs-input-cross-button button { border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-color: var(--w-color-border-field-default) !important; }
+.waggylabs-input-cross-button input { padding-left: 2.625rem; border-top-right-radius: 0px; border-bottom-right-radius: 0px; width: auto; }
+/* color input adjustments */
 .waggylabs-input-cross-button div.clr-field button { border-radius: .3125rem; margin-right: 0.3125rem; height: 2rem; left: 0.3125rem; }
+/* icon input adjustments */
+div.autocomp { background-color: var(--w-color-surface-field); border: 1px solid var(--w-color-border-field-default); z-index: 1500; border-radius: 0.3125rem; margin-top: 0.3125rem; }
+span.autocomp { position: absolute; width: 2rem; top: 50%; transform: translateY(-50%); padding: 0; border-radius: .3125rem; margin-right: 0.3125rem; height: 2rem; left: 0.3125rem; background: none; cursor: inherit; color: inherit; font-size: 1.1875rem; text-align: center; padding-top: 0.25rem; }
+div.autocomp-item { border-top: 1px solid var(--w-color-border-furniture); padding: 0.5rem; cursor: pointer; font-size: 1.1875rem; }
+div.autocomp-item:hover { background-color: var(--w-color-surface-button-hover); }
+div.autocomp-item.autocomp-sel { background-color: var(--w-color-surface-button-hover); }
 
 /*
 div.waggylabs-color-input label { margin-right: 1.5rem; }
