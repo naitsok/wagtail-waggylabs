@@ -1,5 +1,7 @@
 from django import forms
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.forms.utils import ErrorList
 from django.template.loader import render_to_string
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -133,6 +135,25 @@ class BareTableBlock(WagtailTableBlock):
             widget=TableInput(table_options=self.table_options),
             **self.field_options
         )
+        
+    def clean(self, value):
+        if not value:
+            return value
+
+        if value.get("table_header_choice", ""):
+            value["first_row_is_table_header"] = value["table_header_choice"] in [
+                "row",
+                "both",
+            ]
+            value["first_col_is_header"] = value["table_header_choice"] in [
+                "column",
+                "both",
+            ]
+        else:
+            # Ensure we have a choice for the table_header_choice
+            errors = ErrorList(Field.default_error_messages["required"])
+            raise ValidationError("Validation error in TableBlock", params=errors)
+        return self.value_from_form(self.field.clean(self.value_for_form(value)))
     
     def render(self, value, context=None):
         """Replaces Wiagtail render method to replace Hadsontable CSS align
