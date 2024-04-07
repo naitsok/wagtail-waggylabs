@@ -1,18 +1,40 @@
 
 /**
+ * Due to the limitations of Handsontable, the 'cell' elements do not accept keyboard focus.
+ * To achieve this we will convert each cell to contenteditable with plaintext (for browsers that support this).
+ * This is not a perfect fix, clicking in a cell and then using keyboard has some quirks.
+ * However, without these attributes the keyboard cannot navigate to edit these cells at a..
+ */
+const keyboardAccessAttrs = {
+    'contenteditable': 'true',
+    'plaintext-only': 'true',
+    'tabindex': '0',
+};
+
+/**
  * Function to initialize Handsontable
  * @param {string} id - id of the element that contains the value to be displayed in the table
  * @param {object} tableOptions - options for the table
  */
 function initTable(id, tableOptions) {
     const containerId = id + '-handsontable-container';
-    const tableHeaderCheckboxId = id + '-handsontable-header';
-    const colHeaderCheckboxId = id + '-handsontable-col-header';
+    const tableHeaderId = id + '-handsontable-header';
+    const colHeaderId = id + '-handsontable-col-header';
+    const headerChoiceId = id + '-table-header-choice';
     const tableCaptionId = id + '-handsontable-col-caption';
-    const hiddenStreamInput = document.getElementById(id);
-    const tableHeaderCheckbox = document.getElementById(tableHeaderCheckboxId);
-    const colHeaderCheckbox = document.getElementById(colHeaderCheckboxId);
-    const tableCaption = document.getElementById(tableCaptionId);
+    const hiddenStreamInput = $('#' + id);
+    var tableHeader = $('#' + tableHeaderId);
+    var colHeader = $('#' + colHeaderId);
+    var headerChoice = $('#' + headerChoiceId);
+    const tableCaption = $('#' + tableCaptionId);
+    const tableParent = $('#' + id).parent();
+    // Attempt to get rid of JQuery - not needed now
+    // const hiddenStreamInput = document.getElementById(id);
+    // const tableHeader = document.getElementById(tableHeaderId);
+    // const colHeader = document.getElementById(colHeaderId);
+    // const headerChoice = document.getElementById(headerChoiceId);
+    // const tableCaption = document.getElementById(tableCaptionId);
+    // const tableParent = hiddenStreamInput.parentElement;
     const finalOptions = {};
     let hot = null;
     let dataForForm = null;
@@ -26,49 +48,50 @@ function initTable(id, tableOptions) {
         return element;
     };
     const getWidth = () => {
-        // there is no .widget-table_input element
-        // return $('.widget-table_input').closest('.sequence-member-inner').width();
-        return undefined;
+        return $('.w-field--table_input').closest('.w-panel').width();
     };
     const getHeight = () => {
-        // const tableParent = $('#' + id).parent();
-        // return tableParent.find('.htCore').height() + (tableParent.find('.input').height() * 2);
-        const tableParent = hiddenStreamInput.parentElement;
-        return tableParent.querySelector('.htCore').clientHeight + 
-            tableParent.querySelector('.input').clientHeight * 2;
+        let htCoreHeight = 0;
+        tableParent.find('.htCore').each(function() {
+            htCoreHeight += $(this).height();
+        });
+        return htCoreHeight + tableParent.find('[data-field]').first().height();
+        // Attempt to get rid of JQuery - not needed now
+        // tableParent.querySelectorAll('.htCore').forEach(() => {
+        //     htCoreHeight += $(this).height();
+        // });
+        // return htCoreHeight + tableParent.querySelectorAll('[data-field]')[0].clientHeight;
     };
-    const resizeTargets = ['.input>.handsontable', '.wtHider', '.wtHolder'];
+    const resizeTargets = [`#${containerId}`, '.wtHider', '.wtHolder'];
     const resizeHeight = (height) => {
-        // resizeTargets.forEach(())
         const currTable = $('#' + id);
-        $.each(resizeTargets, () => {
-            currTable.closest('.field-content').find(this).height(height);
+        $.each(resizeTargets, function() {
+            currTable.closest('[data-field]').find(this).height(height);
         });
     };
     function resizeWidth(width) {
-        $.each(resizeTargets, () => {
+        $.each(resizeTargets, function() {
             $(this).width(width);
         });
-        const parentDiv = $('.widget-table_input').parent();
-        parentDiv.find('.field-content').width(width);
-        parentDiv.find('.fieldname-table .field-content .field-content').width('80%');
+        const field = $('.w-field--table_input');
+        field.width(width);
     }
 
     try {
-        dataForForm = JSON.parse(hiddenStreamInput.value);
+        dataForForm = JSON.parse(hiddenStreamInput.val());
+        // dataForForm = JSON.parse(hiddenStreamInput.value);
     } catch (e) {
         // do nothing
     }
 
     if (dataForForm !== null) {
-        if (dataForForm.hasOwnProperty('first_row_is_table_header')) {
-            tableHeaderCheckbox.setAttribute('checked', dataForForm.first_row_is_table_header);
-        }
-        if (dataForForm.hasOwnProperty('first_col_is_header')) {
-            colHeaderCheckbox.setAttribute('checked', dataForForm.first_col_is_header);
-        }
         if (dataForForm.hasOwnProperty('table_caption')) {
-            tableCaption.setAttribute('value', dataForForm.table_caption);
+            tableCaption.prop('value', dataForForm.table_caption);
+            // tableCaption.value = dataForForm.table_caption;
+        }
+        if (dataForForm.hasOwnProperty('table_header_choice')) {
+            headerChoice.prop('value', dataForForm.table_header_choice);
+            // headerChoice.value = dataForForm.table_header_choice;
         }
     }
 
@@ -83,6 +106,7 @@ function initTable(id, tableOptions) {
         });
     }
 
+    // not needed anymore - see persist()
     const getCellsClassnames = () => {
         const meta = hot.getCellsMeta();
         const cellsClassnames = [];
@@ -134,27 +158,84 @@ function initTable(id, tableOptions) {
         }
     }
 
-    const save = () => {
-        hiddenStreamInput.value = JSON.stringify({
-            data: hot.getData(),
-            cell: getCellsClassnames(),
-            first_row_is_table_header: tableHeaderCheckbox.getAttribute('checked'),
-            first_col_is_header: colHeaderCheckbox.getAttribute('checked'),
-            table_caption: tableCaption.value
+    const persist = () => {
+
+        const cell = [];
+        const mergeCells = [];
+        const cellsMeta = hot.getCellsMeta();
+
+        cellsMeta.forEach((meta) => {
+            let className;
+            let hidden;
+
+            if (meta.hasOwnProperty('className')) {
+                className = meta.className;
+            }
+            if (meta.hasOwnProperty('hidden')) {
+                // Cells are hidden if they have been merged
+                hidden = true;
+            }
+
+            // Undefined values won't be included in the output
+            if (className !== undefined || hidden) {
+                cell.push({
+                    row: meta.row,
+                    col: meta.col,
+                    className: className,
+                    hidden: hidden,
+                });
+            }
         });
+
+        if (hot.getPlugin('mergeCells').isEnabled()) {
+        const collection = hot.getPlugin('mergeCells').mergedCellsCollection;
+
+        collection.mergedCells.forEach((merge) => {
+            mergeCells.push({
+                row: merge.row,
+                col: merge.col,
+                rowspan: merge.rowspan,
+                colspan: merge.colspan,
+            });
+        });
+        }
+
+        hiddenStreamInput.val(JSON.stringify({
+                data: hot.getData(),
+                cell: cell,
+                mergeCells: mergeCells,
+                first_row_is_table_header: tableHeader.val(),
+                first_col_is_header: colHeader.val(),
+                table_header_choice: headerChoice.val(),
+                table_caption: tableCaption.val(),
+            }),
+        );
     };
 
     const cellEvent = (change, source) => {
-        if (source === 'loadData') {
-            return;  // don't save this change
+        if (!isInitialized || source === 'loadData' || source === 'MergeCells') {
+            return; // don't save this change
         }
-        save();
+        persist();
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const metaEvent = (row, column, key, value) => {
         if (isInitialized && key === 'className') {
-            save();
+            persist();
+        }
+    };
+
+    const mergeEvent = (cellRange, mergeParent, auto) => {
+        if (isInitialized) {
+            persist();
+        }
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const unmergeEvent = function (cellRange, auto) {
+        if (isInitialized) {
+            persist();
         }
     };
 
@@ -164,19 +245,23 @@ function initTable(id, tableOptions) {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const structureEvent = (index, amount) => {
-        save();
+        // resizeHeight(getHeight());
+        persist();
+        // wait until the document is ready and add these attributes.
+        $(() => {
+            $(tableParent).find('td, th').attr(keyboardAccessAttrs);
+            // window resize event is able to trigger table resize, other methods such as above
+            // resizeHeight() does not seem to work
+            window.dispatchEvent(new Event('resize'));
+        });
     };
 
-    tableHeaderCheckbox.addEventListener('change', () => {
-        save();
+    headerChoice.on('change', () => { // addEventListener
+        persist();
     });
-
-    colHeaderCheckbox.addEventListener('change', () => {
-        save();
-    });
-
-    tableCaption.addEventListener('change', () => {
-        save();
+    
+    tableCaption.on('change', () => { // addEventListener
+        persist();
     });
 
     const defaultOptions = {
@@ -186,6 +271,8 @@ function initTable(id, tableOptions) {
         afterRemoveCol: structureEvent,
         afterRemoveRow: structureEvent,
         afterSetCellMeta: metaEvent,
+        afterMergeCells: mergeEvent,
+        afterUnmergeCells: unmergeEvent,
         afterInit: initEvent,
         afterRenderer: typesetCell,
         // contextMenu set via init, from server defaults
@@ -208,21 +295,20 @@ function initTable(id, tableOptions) {
         finalOptions[key] = tableOptions[key];
     });
 
-    hot = new Handsontable(document.getElementById(containerId), finalOptions);
-    hot.render(); // Call to render removes 'null' literals from empty cells
-    // $(document).ready(function() {
-    //   typesetOnLoad();
-    // });
-    
-
-    // Apply resize after document is finished loading (parent .sequence-member-inner width is set)
-    if ('onresize' in window) {
-        resizeHeight(getHeight());
-        window.addEventListener('load', () => {
-            window.dispatchEvent(new Event('resize'));
-        });
-        // $(window).on('load', () => {
-        //     $(window).trigger('resize');
-        // });
+    if (finalOptions.hasOwnProperty('mergeCells') && finalOptions.mergeCells === true) {
+        // If mergeCells is enabled and true then use the value from the database
+        if (dataForForm !== null && dataForForm.hasOwnProperty('mergeCells')) {
+            finalOptions.mergeCells = dataForForm.mergeCells;
+        }
     }
+
+    hot = new Handsontable(document.getElementById(containerId), finalOptions);
+    window.addEventListener('load', () => {
+        // Render the table. Calling render also removes 'null' literals from empty cells.
+        hot.render();
+        resizeHeight(getHeight());
+        tableParent.find('td, th').attr(keyboardAccessAttrs);
+        window.dispatchEvent(new Event('resize'));
+    });
+
 }

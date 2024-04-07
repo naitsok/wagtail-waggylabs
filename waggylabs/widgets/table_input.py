@@ -38,13 +38,25 @@ class TableInputAdapter(WidgetAdapter):
 
     def js_args(self, widget):
         strings = {
-            'Row header': _("Row header"),
-            'Display the first row as a header.': _("Display the first row as a header."),
-            'Column header': _("Column header"),
-            'Display the first column as a header.': _("Display the first column as a header."),
-            'Table caption': _("Table caption"),
-            'A heading that identifies the overall topic of the table, and is useful for screen reader users': _("A heading that identifies the overall topic of the table, and is useful for screen reader users"),
-            'Table': _("Table"),
+            "Row header": _("Row header"),
+            "Table headers": _("Table headers"),
+            "Display the first row as a header": _("Display the first row as a header"),
+            "Display the first column as a header": _(
+                "Display the first column as a header"
+            ),
+            "Column header": _("Column header"),
+            "Display the first row AND first column as headers": _(
+                "Display the first row AND first column as headers"
+            ),
+            "No headers": _("No headers"),
+            "Which cells should be displayed as headers?": _(
+                "Which cells should be displayed as headers?"
+            ),
+            "Table caption": _("Table caption"),
+            "A heading that identifies the overall topic of the table, and is useful for screen reader users.": _(
+                "A heading that identifies the overall topic of the table, and is useful for screen reader users."
+            ),
+            "Table": _("Table"),
         }
 
         return [

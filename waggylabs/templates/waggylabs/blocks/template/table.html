@@ -77,10 +77,10 @@
         </caption>
         {% endif %}
         {% include_block value.bound_blocks.table %}
-        <tfoot class="table-group-divider">
+        <tfoot class="table-group-divider figure-caption">
             <tr>
                 {% if value.footer %}
-                <td colspan="{{ value.table.data.0|length }}" class="figure-caption">{{ value.footer|markdown:page.pk|safe }}</td>
+                <td colspan="{{ value.table.data.0|length }}">{{ value.footer|markdown:page.pk|safe }}</td>
                 {% endif %}
             </tr>
         </tfoot>

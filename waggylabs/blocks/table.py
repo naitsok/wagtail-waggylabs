@@ -79,13 +79,16 @@ DEFAULT_TABLE_OPTIONS = {
         'remove_col',
         '---------',
         'undo',
-        'redo'
+        'redo',
+        '---------',
+        'mergeCells',
     ],
     'editor': 'text',
     'stretchH': 'all',
     'height': 108,
     'renderer': 'text',
     'autoColumnSize': False,
+    'mergeCells': True,
 }
 
 
@@ -98,16 +101,24 @@ JUSTIFY = 'htJustify'
 TOP = 'htTop'
 MIDDLE = 'htMiddle'
 BOTTOM = 'htBottom'
-DEFAULT_ALIGN_CLASSES = {
-    LEFT: 'text-start',
-    CENTER: 'text-center',
-    RIGHT: 'text-end',
-    JUSTIFY: 'text-center',
-    TOP: 'align-top',
-    MIDDLE: 'align-middle',
-    BOTTOM: 'align-bottom',
-}
-
+# DEFAULT_ALIGN_CLASSES = {
+#     LEFT: 'text-start',
+#     CENTER: 'text-center',
+#     RIGHT: 'text-end',
+#     JUSTIFY: 'text-center',
+#     TOP: 'align-top',
+#     MIDDLE: 'align-middle',
+#     BOTTOM: 'align-bottom',
+# }
+DEFAULT_ALIGN_CLASSES = [
+    (LEFT, 'text-start'),
+    (CENTER, 'text-center'),
+    (RIGHT, 'text-end'),
+    (JUSTIFY, 'text-center'),
+    (TOP, 'align-top'),
+    (MIDDLE, 'align-middle'),
+    (BOTTOM, 'align-bottom'),
+]
 
 class BareTableBlock(WagtailTableBlock):
     """A replacement of Wagtail TableBlock with the table block with hidden caption and 
@@ -136,27 +147,27 @@ class BareTableBlock(WagtailTableBlock):
             **self.field_options
         )
         
-    def clean(self, value):
-        if not value:
-            return value
+    # def clean(self, value):
+    #     if not value:
+    #         return value
 
-        if value.get("table_header_choice", ""):
-            value["first_row_is_table_header"] = value["table_header_choice"] in [
-                "row",
-                "both",
-            ]
-            value["first_col_is_header"] = value["table_header_choice"] in [
-                "column",
-                "both",
-            ]
-        else:
-            # Ensure we have a choice for the table_header_choice
-            errors = ErrorList(Field.default_error_messages["required"])
-            raise ValidationError("Validation error in TableBlock", params=errors)
-        return self.value_from_form(self.field.clean(self.value_for_form(value)))
+    #     if value.get("table_header_choice", ""):
+    #         value["first_row_is_table_header"] = value["table_header_choice"] in [
+    #             "row",
+    #             "both",
+    #         ]
+    #         value["first_col_is_header"] = value["table_header_choice"] in [
+    #             "column",
+    #             "both",
+    #         ]
+    #     else:
+    #         # Ensure we have a choice for the table_header_choice
+    #         errors = ErrorList(Field.default_error_messages["required"])
+    #         raise ValidationError("Validation error in TableBlock", params=errors)
+    #     return self.value_from_form(self.field.clean(self.value_for_form(value)))
     
     def render(self, value, context=None):
-        """Replaces Wiagtail render method to replace Hadsontable CSS align
+        """Replaces Wagtail render method to replace Hadsontable CSS align
         classes with Bootstrap CSS classes."""
         template = getattr(self.meta, "template", None)
         if template and value:
@@ -185,17 +196,32 @@ class BareTableBlock(WagtailTableBlock):
                     "data": value["data"][1:]
                     if table_header
                     else value.get("data", []),
+                    # keep_table_tag is needed when the table is used withing more complex table block
                     "keep_table_tag": self.keep_table_tag,
                 }
             )
 
             if value.get("cell"):
                 new_context["classnames"] = {}
+                new_context["hidden"] = {}
                 for meta in value["cell"]:
                     if "className" in meta:
-                        new_context["classnames"][(meta["row"], meta["col"])] = self.align_classes[meta[
-                            "className"
-                        ]]
+                        classnames_bs = meta["className"]
+                        for classname_pair in self.align_classes:
+                            classnames_bs = classnames_bs.replace(classname_pair[0], classname_pair[1])
+                        new_context["classnames"][(meta["row"], meta["col"])] = classnames_bs
+                    if "hidden" in meta:
+                        new_context["hidden"][(meta["row"], meta["col"])] = meta[
+                            "hidden"
+                        ]
+                        
+            if value.get("mergeCells"):
+                new_context["spans"] = {}
+                for merge in value["mergeCells"]:
+                    new_context["spans"][(merge["row"], merge["col"])] = {
+                        "rowspan": merge["rowspan"],
+                        "colspan": merge["colspan"],
+                    }
 
             return render_to_string(template, new_context)
         else:
