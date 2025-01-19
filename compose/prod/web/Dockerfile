@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1
 
-ARG PYTHON_VERSION=3.12
+ARG PYTHON_VERSION=3.11
 
 ###########
 # BUILDER #
 ###########
 
 # pull official base image
-FROM python:${PYTHON_VERSION}-slim-bookworm as builder
+FROM python:${PYTHON_VERSION}-slim-buster as builder
 
 # set work directory
 WORKDIR /app
@@ -43,7 +43,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.t
 # FINAL #
 #########
 
-FROM python:${PYTHON_VERSION}-slim-bookworm as base
+FROM python:${PYTHON_VERSION}-slim-buster as base
 
 # create directory for the app user
 RUN mkdir -p /home/app
