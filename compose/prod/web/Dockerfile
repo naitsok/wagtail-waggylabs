@@ -7,7 +7,7 @@ ARG PYTHON_VERSION=3.12
 ###########
 
 # pull official base image
-FROM python:${PYTHON_VERSION}-slim-buster as builder
+FROM python:${PYTHON_VERSION}-slim-bullseye as builder
 
 # set work directory
 WORKDIR /app
