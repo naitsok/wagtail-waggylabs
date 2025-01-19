@@ -76,12 +76,12 @@ COPY --from=builder /app/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
-# copy entrypoint.prod.sh
+# copy entrypoint.sh
 COPY ./compose/prod/web/entrypoint.sh .
 RUN sed -i 's/\r$//g'  $APP_HOME/entrypoint.sh
 RUN chmod +x  $APP_HOME/entrypoint.sh
 
-# copy entrypoint.prod.sh
+# copy start.sh
 COPY ./compose/prod/web/start.sh .
 RUN sed -i 's/\r$//g'  $APP_HOME/start.sh
 RUN chmod +x  $APP_HOME/start.sh
