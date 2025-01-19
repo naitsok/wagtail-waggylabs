@@ -43,7 +43,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.t
 # FINAL #
 #########
 
-FROM python:${PYTHON_VERSION}-slim-buster as base
+FROM python:${PYTHON_VERSION}-slim-bullseye as base
 
 # create directory for the app user
 RUN mkdir -p /home/app
