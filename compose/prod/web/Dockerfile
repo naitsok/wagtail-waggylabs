@@ -17,17 +17,18 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
-RUN echo "deb http://archive.debian.org/debian buster main contrib non-free" > /etc/apt/sources.list
-RUN echo "deb http://archive.debian.org/debian buster-updates main contrib non-free" > /etc/apt/sources.list
-RUN echo "deb http://archive.debian.org/debian-security buster/updates main contrib non-free" > /etc/apt/sources.list
+# RUN echo "deb http://archive.debian.org/debian buster main contrib non-free" > /etc/apt/sources.list
+# RUN echo "deb http://archive.debian.org/debian buster-updates main contrib non-free" > /etc/apt/sources.list
+# RUN echo "deb http://archive.debian.org/debian-security buster/updates main contrib non-free" > /etc/apt/sources.list
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
     build-essential \
     libpq-dev \
     libmariadb-dev \
     libjpeg62-turbo-dev \
     zlib1g-dev \
-    libwebp-dev \
- && rm -rf /var/lib/apt/lists/*
+    libwebp-dev
+RUN apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
 # lint
 # RUN pip install flake8==6.1.0
@@ -64,17 +65,18 @@ WORKDIR $APP_HOME
 
 # Install system packages required by Wagtail and Django.
 # https://github.com/wagtail/wagtail/blob/main/wagtail/project_template/Dockerfile
-RUN echo "deb http://archive.debian.org/debian buster main contrib non-free" > /etc/apt/sources.list
-RUN echo "deb http://archive.debian.org/debian buster-updates main contrib non-free" > /etc/apt/sources.list
-RUN echo "deb http://archive.debian.org/debian-security buster/updates main contrib non-free" > /etc/apt/sources.list
+# RUN echo "deb http://archive.debian.org/debian buster main contrib non-free" > /etc/apt/sources.list
+# RUN echo "deb http://archive.debian.org/debian buster-updates main contrib non-free" > /etc/apt/sources.list
+# RUN echo "deb http://archive.debian.org/debian-security buster/updates main contrib non-free" > /etc/apt/sources.list
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
     build-essential \
     libpq-dev \
     libmariadb-dev \
     libjpeg62-turbo-dev \
     zlib1g-dev \
-    libwebp-dev \
- && rm -rf /var/lib/apt/lists/*
+    libwebp-dev
+RUN apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
 # install dependencies
 COPY --from=builder /app/wheels /wheels
