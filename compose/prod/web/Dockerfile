@@ -7,7 +7,7 @@ ARG PYTHON_VERSION=3.11
 ###########
 
 # pull official base image
-FROM python:${PYTHON_VERSION}-slim-buster as builder
+FROM python:${PYTHON_VERSION}-slim-bookworm as builder
 
 # set work directory
 WORKDIR /app
@@ -17,9 +17,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
-# RUN echo "deb http://archive.debian.org/debian buster main contrib non-free" > /etc/apt/sources.list
-# RUN echo "deb http://archive.debian.org/debian buster-updates main contrib non-free" > /etc/apt/sources.list
-# RUN echo "deb http://archive.debian.org/debian-security buster/updates main contrib non-free" > /etc/apt/sources.list
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
     build-essential \
     libpq-dev \
@@ -47,7 +44,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.t
 # FINAL #
 #########
 
-FROM python:${PYTHON_VERSION}-slim-buster as base
+FROM python:${PYTHON_VERSION}-slim-bookworm as base
 
 # create directory for the app user
 RUN mkdir -p /home/app
@@ -65,9 +62,6 @@ WORKDIR $APP_HOME
 
 # Install system packages required by Wagtail and Django.
 # https://github.com/wagtail/wagtail/blob/main/wagtail/project_template/Dockerfile
-# RUN echo "deb http://archive.debian.org/debian buster main contrib non-free" > /etc/apt/sources.list
-# RUN echo "deb http://archive.debian.org/debian buster-updates main contrib non-free" > /etc/apt/sources.list
-# RUN echo "deb http://archive.debian.org/debian-security buster/updates main contrib non-free" > /etc/apt/sources.list
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
     build-essential \
     libpq-dev \
