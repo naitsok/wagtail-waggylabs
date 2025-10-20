@@ -94,7 +94,7 @@ COPY ./waggylabs_site ./waggylabs_site
 COPY ./manage.py ./manage.py
 
 # run collectstatic
-RUN python manage.py collectstatic --noinput
+# RUN python manage.py collectstatic --noinput
 
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
