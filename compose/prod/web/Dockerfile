@@ -61,6 +61,9 @@ WORKDIR $APP_HOME
 
 # Install system packages required by Wagtail and Django.
 # https://github.com/wagtail/wagtail/blob/main/wagtail/project_template/Dockerfile
+RUN echo "deb http://archive.debian.org/debian buster main contrib non-free" > /etc/apt/sources.list
+RUN echo "deb http://archive.debian.org/debian buster-updates main contrib non-free" > /etc/apt/sources.list
+RUN echo "deb http://archive.debian.org/debian-security buster/updates main contrib non-free" > /etc/apt/sources.list
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
     build-essential \
     libpq-dev \
