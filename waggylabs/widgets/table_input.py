@@ -3,8 +3,8 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext as _
 
 from wagtail.admin.staticfiles import versioned_static
-from wagtail.telepath import register
-from wagtail.widget_adapters import WidgetAdapter
+from wagtail.admin.telepath import register
+from wagtail.admin.telepath.widgets import WidgetAdapter
 
 
 class TableInput(forms.HiddenInput):

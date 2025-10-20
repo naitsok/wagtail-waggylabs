@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils.functional import cached_property
 
 from wagtail.blocks.struct_block import StructBlockAdapter
-from wagtail.telepath import register
+from wagtail.admin.telepath import register
 
 from waggylabs.blocks.code import CodeBlock, CODEBLOCK_LANGS as CBL
 

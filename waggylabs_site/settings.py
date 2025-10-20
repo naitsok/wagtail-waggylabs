@@ -252,6 +252,9 @@ WAGTAIL_MODERATION_ENABLED = True
 # To count usage of images and documents
 WAGTAIL_USAGE_COUNT_ENABLED = True
 
+# Wagtail tag setting
+WAGTAIL_TAG_SPACES_ALLOWED = True
+
 # Date and time formats for admin
 # WAGTAIL_DATE_FORMAT = '%d.%m.%Y.'
 # WAGTAIL_DATETIME_FORMAT = '%d.%m.%Y. %H:%M'

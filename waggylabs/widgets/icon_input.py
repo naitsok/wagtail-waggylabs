@@ -9,10 +9,6 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-from wagtail.telepath import register
-from wagtail.widget_adapters import WidgetAdapter
-from wagtail.utils.widgets import WidgetWithScript
-
 
 def collect_icons():
     """Collects icon classes from the CSS file."""
@@ -65,49 +61,7 @@ class IconInput(forms.TextInput):
             ],
             css={"all": [
                 "waggylabs/vendor/autocomp/autocomp.min.css",
-                "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
+                "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css",
                 ]},
         )
-
-
-'''
-class IconInput(WidgetWithScript, forms.widgets.TextInput):
-    """Widget to select Font Awesome icon."""
-    
-    def __init__(
-        self,
-        icons=BOOTSTRAP_ICONS,
-        attrs={
-            'placeholder': _('Icon - start typing'),
-            'class': 'waggylabs-icon-input',
-        }):
-        super().__init__(attrs)
-        self.attrs['iconsjson'] = json.dumps(icons)
         
-    def render_js_init(self, id_, name, value):
-        """Attaches javascript init function to the widget."""
-        return f'autocompleteAttach("{id_}");'
-    
-    @property
-    def media(self):
-        return forms.Media(
-            css={
-                "all": (
-                    "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
-                    )
-            },
-            js=(
-                # Wagtail already uses jquery-ui.js so no need to add here
-                "waggylabs/js/widgets/icon-input.js",
-            )
-        )
-        
-class IconInputAdapter(WidgetAdapter):
-    """Replaces the textarea with MathTextareaAdapter to have Javascript code to use CodeMirror for editing and MathJax for preview."""
-    js_constructor = "waggylabs.widgets.IconInput"
-
-    class Media:
-        js = ["waggylabs/js/blocks/icon-input-adapter.js"]
-
-register(IconInputAdapter(), IconInput)
-'''
