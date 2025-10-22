@@ -50,7 +50,8 @@ FROM python:${PYTHON_VERSION}-slim-bookworm as base
 RUN mkdir -p /home/app
 
 # create the app user
-RUN addgroup --system app && adduser --system --group app
+# RUN addgroup --system app && adduser --system --group app
+RUN useradd -r -u 101 -g app app
 
 # create the appropriate directories
 ENV HOME=/home/app
